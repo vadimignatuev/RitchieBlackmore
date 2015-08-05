@@ -40,8 +40,8 @@ namespace RitchieBlackmore.Controllers
         }
 
         public void SaveChange(object obj)
-        { 
-
+        {
+            int s = 9;
         }
     }
 }

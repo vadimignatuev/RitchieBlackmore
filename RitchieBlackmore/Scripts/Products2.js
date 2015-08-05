@@ -65,7 +65,7 @@
         sortname: 'invdate',
         viewrecords: true,
         height: "100%",
-        //editurl: 'clientArray',
+        editurl: 'Products/SaveChange',
         ondblClickRow: function (id) {
             // edit the row and save it on press "enter" key
             $(this).jqGrid('editRow', id, true, null, null, 'clientArray');
