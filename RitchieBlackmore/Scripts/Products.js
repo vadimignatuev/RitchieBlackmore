@@ -32,14 +32,14 @@
         //sortorder: "asc", // порядок сортировки
         viewrecords: true,
         editurl: "Products/SaveChange",
-        onSelectRow: function (id) {
-            console.log(id);
-            if (id && id !== lastSel) {
-                jQuery('#jqg').restoreRow(lastsel);
-                jQuery('#jqg').editRow(id, true);
-                lastsel2 = id;
-            }
-        },
+        //onSelectRow: function (id) {
+        //    console.log(id);
+        //    if (id && id != lastsel) {
+        //        jQuery('#jqg').restoreRow(lastsel);
+        //        jQuery('#jqg').editRow(id, true);
+        //        lastsel2 = id;
+        //    }
+        //},
         gridComplete: function(){}
         
     });
@@ -55,6 +55,14 @@
     });
 
 });
+
+function getHtmlNavigationCell(id) {
+    return   "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + id + ")\">" + "Движение товара</button>" +
+               "<button class=\"ver3_statusbutton\" onclick=\"editRow(" + id + ")\">" + "Редактировать" + "</button>" +
+               "<button class=\"ver3_statusbutton\" onclick=\"deleteColumn(" + id + ")\">" + "Удалить" + "</button>" +
+                "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + id + ")\">" + "Окно статистики</button>" 
+           
+} 
     
 function motionProduct(options) {
       $('#formsMotionsProduct').dialog({
@@ -73,7 +81,36 @@ function editRow(id) {
 function changeViewSelRow(id) {
     var mydiv = $("#cellNavigationRowNumber" + id);
     console.log("That is some " + mydiv)
-    $("#cellNavigationRowNumber" + id).html("<button class=\"ver3_statusbutton\">Сохранить</button>");
+    $("#cellNavigationRowNumber" + id).html("<button class=\"ver3_statusbutton\" onclick=\"saveChange(" + id + ")\">" + "Сохранить</button>" +
+        "<button class=\"ver3_statusbutton\" onclick=\"backEdit(" + id + ")\">" + "Отменить</button>");
+}
+
+function saveChange(id)
+{
+    list = jQuery("#jqg").getRowData(id)._Id;
+    console.log(list);
+    jQuery("#jqg").saveRow(id
+        //{
+        //    successfunc: function () {
+        //        //return jQuery("#jqg").rowList[id];
+        //    }
+        //},
+        //{
+        //    extraparam: { _Id : jQuery("#jqg").rowList[id]._Id }
+            
+        //}
+        //aftersavefunc,
+        //errorfunc,
+        //afterrestorefunc
+        );
+    
+}
+
+function backEdit(id)
+{
+    jQuery('#jqg').restoreRow(id);
+    $("#cellNavigationRowNumber" + id).html(getHtmlNavigationCell);
+
 }
 
 function statisticsProduct(options) {
@@ -83,22 +120,24 @@ function statisticsProduct(options) {
         height: 'auto'
     });
 }
+
+function deleteColumn(id) {
+    $('#deleteDialogForm').dialog();
+    Query('#jqg').delRowData(id);
+}
  
 
-    function status_button_maker_v3(rowId, options, rowObject) {
-        return "<div id=\"cellNavigationRowNumber"+options.rowId+"\">"+
-               "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + options.rowId + ")\">" + "Движение товара</button>" +
-               "<button class=\"ver3_statusbutton\" onclick=\"editRow(" + options.rowId + ")\">" + "Редактировать" + "</button>" +
-               "<button class=\"ver3_statusbutton\" >" + "Удалить" + "</button>" +
-                "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + rowObject._Id + ")\">" + "Окно статистики</button>" +
-            "</div>"
-    }
+function status_button_maker_v3(rowId, options, rowObject) {
+    return "<div id=\"cellNavigationRowNumber" + options.rowId + "\">" +
+            getHtmlNavigationCell(options.rowId) +
+        "</div>"
+}
 
-    function clicBebebe() {
-        console.log("I am clict");
-        rowid = $("#jqg").getGridParam('selrow');
-        console.log(rowid);
-    }
+function clicBebebe() {
+    console.log("I am clict");
+    rowid = $("#jqg").getGridParam('selrow');
+    console.log(rowid);
+}
 
 
     function initStatistikGrid(rowId) {

@@ -39,7 +39,8 @@ namespace RitchieBlackmore.Controllers
             return result;
         }
 
-        public void SaveChange(object obj)
+        [HttpPost]
+        public void SaveChange(string _Name, decimal? _Price, int? id)
         {
             int s = 9;
         }
