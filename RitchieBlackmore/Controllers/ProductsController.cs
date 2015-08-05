@@ -38,5 +38,10 @@ namespace RitchieBlackmore.Controllers
             };
             return result;
         }
+
+        public void SaveChange(object obj)
+        { 
+
+        }
     }
 }
