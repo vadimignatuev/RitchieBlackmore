@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="RitchieBlackmoreModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="RitchieBlackmoreModelStoreContainer">
+          <EntitySet Name="OperationType" EntityType="RitchieBlackmoreModel.Store.OperationType" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Product" EntityType="RitchieBlackmoreModel.Store.Product" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="StatisticsOperation" EntityType="RitchieBlackmoreModel.Store.StatisticsOperation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Users" EntityType="RitchieBlackmoreModel.Store.Users" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_StatisticsOperation_OperationType" Association="RitchieBlackmoreModel.Store.FK_StatisticsOperation_OperationType">
+            <End Role="OperationType" EntitySet="OperationType" />
+            <End Role="StatisticsOperation" EntitySet="StatisticsOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatisticsOperation_StatisticsOperation" Association="RitchieBlackmoreModel.Store.FK_StatisticsOperation_StatisticsOperation">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="StatisticsOperation" EntitySet="StatisticsOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatisticsOperation_Users" Association="RitchieBlackmoreModel.Store.FK_StatisticsOperation_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StatisticsOperation" EntitySet="StatisticsOperation" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="OperationType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Price" Type="money" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StatisticsOperation">
+          <Key>
+            <PropertyRef Name="OperationId" />
+          </Key>
+          <Property Name="OperationId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OperationTypeId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="DateOperation" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="IsAnonymous" Type="bit" Nullable="false" />
+          <Property Name="LastActivityDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_StatisticsOperation_OperationType">
+          <End Role="OperationType" Type="RitchieBlackmoreModel.Store.OperationType" Multiplicity="1" />
+          <End Role="StatisticsOperation" Type="RitchieBlackmoreModel.Store.StatisticsOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OperationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StatisticsOperation">
+              <PropertyRef Name="OperationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatisticsOperation_StatisticsOperation">
+          <End Role="Product" Type="RitchieBlackmoreModel.Store.Product" Multiplicity="1" />
+          <End Role="StatisticsOperation" Type="RitchieBlackmoreModel.Store.StatisticsOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StatisticsOperation">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatisticsOperation_Users">
+          <End Role="Users" Type="RitchieBlackmoreModel.Store.Users" Multiplicity="1" />
+          <End Role="StatisticsOperation" Type="RitchieBlackmoreModel.Store.StatisticsOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="StatisticsOperation">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DeleteProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProductId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetCountProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetRangeSortedProducts" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StartPosition" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+          <Parameter Name="ColumnName" Type="nvarchar" Mode="In" />
+          <Parameter Name="SortOrder" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GetStatisticsProduct" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ProdactId" Type="int" Mode="In" />
+          <Parameter Name="StartPosition" Type="int" Mode="In" />
+          <Parameter Name="Quantity" Type="int" Mode="In" />
+          <Parameter Name="ColumnName" Type="nvarchar" Mode="In" />
+          <Parameter Name="SortOrder" Type="bit" Mode="In" />
+        </Function>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RitchieBlackmoreModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="RitchieBlackmoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OperationType" EntityType="RitchieBlackmoreModel.OperationType" />
+          <EntitySet Name="Product" EntityType="RitchieBlackmoreModel.Product" />
+          <EntitySet Name="StatisticsOperation" EntityType="RitchieBlackmoreModel.StatisticsOperation" />
+          <EntitySet Name="Users" EntityType="RitchieBlackmoreModel.Users" />
+          <AssociationSet Name="FK_StatisticsOperation_OperationType" Association="RitchieBlackmoreModel.FK_StatisticsOperation_OperationType">
+            <End Role="OperationType" EntitySet="OperationType" />
+            <End Role="StatisticsOperation" EntitySet="StatisticsOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatisticsOperation_StatisticsOperation" Association="RitchieBlackmoreModel.FK_StatisticsOperation_StatisticsOperation">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="StatisticsOperation" EntitySet="StatisticsOperation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StatisticsOperation_Users" Association="RitchieBlackmoreModel.FK_StatisticsOperation_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="StatisticsOperation" EntitySet="StatisticsOperation" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteProduct">
+            <Parameter Name="ProductId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetCountProducts" ReturnType="Collection(Int32)" />
+          <FunctionImport Name="GetRangeSortedProducts" EntitySet="Product" ReturnType="Collection(RitchieBlackmoreModel.Product)">
+            <Parameter Name="StartPosition" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+            <Parameter Name="ColumnName" Mode="In" Type="String" />
+            <Parameter Name="SortOrder" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GetStatisticsProduct" ReturnType="Collection(RitchieBlackmoreModel.GetStatisticsProduct_Result)">
+            <Parameter Name="ProdactId" Mode="In" Type="Int32" />
+            <Parameter Name="StartPosition" Mode="In" Type="Int32" />
+            <Parameter Name="Quantity" Mode="In" Type="Int32" />
+            <Parameter Name="ColumnName" Mode="In" Type="String" />
+            <Parameter Name="SortOrder" Mode="In" Type="Boolean" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="OperationType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="StatisticsOperation" Relationship="RitchieBlackmoreModel.FK_StatisticsOperation_OperationType" FromRole="OperationType" ToRole="StatisticsOperation" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="StatisticsOperation" Relationship="RitchieBlackmoreModel.FK_StatisticsOperation_StatisticsOperation" FromRole="Product" ToRole="StatisticsOperation" />
+        </EntityType>
+        <EntityType Name="StatisticsOperation">
+          <Key>
+            <PropertyRef Name="OperationId" />
+          </Key>
+          <Property Name="OperationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="OperationTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="DateOperation" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="OperationType" Relationship="RitchieBlackmoreModel.FK_StatisticsOperation_OperationType" FromRole="StatisticsOperation" ToRole="OperationType" />
+          <NavigationProperty Name="Product" Relationship="RitchieBlackmoreModel.FK_StatisticsOperation_StatisticsOperation" FromRole="StatisticsOperation" ToRole="Product" />
+          <NavigationProperty Name="Users" Relationship="RitchieBlackmoreModel.FK_StatisticsOperation_Users" FromRole="StatisticsOperation" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="ApplicationId" Type="Guid" Nullable="false" />
+          <Property Name="UserId" Type="Guid" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="IsAnonymous" Type="Boolean" Nullable="false" />
+          <Property Name="LastActivityDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="StatisticsOperation" Relationship="RitchieBlackmoreModel.FK_StatisticsOperation_Users" FromRole="Users" ToRole="StatisticsOperation" />
+        </EntityType>
+        <Association Name="FK_StatisticsOperation_OperationType">
+          <End Role="OperationType" Type="RitchieBlackmoreModel.OperationType" Multiplicity="1" />
+          <End Role="StatisticsOperation" Type="RitchieBlackmoreModel.StatisticsOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OperationType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StatisticsOperation">
+              <PropertyRef Name="OperationTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatisticsOperation_StatisticsOperation">
+          <End Role="Product" Type="RitchieBlackmoreModel.Product" Multiplicity="1" />
+          <End Role="StatisticsOperation" Type="RitchieBlackmoreModel.StatisticsOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="StatisticsOperation">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StatisticsOperation_Users">
+          <End Role="Users" Type="RitchieBlackmoreModel.Users" Multiplicity="1" />
+          <End Role="StatisticsOperation" Type="RitchieBlackmoreModel.StatisticsOperation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="StatisticsOperation">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="GetStatisticsProduct_Result">
+          <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="OperationName" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="Quantity" Nullable="false" />
+          <Property Type="DateTime" Name="DateOperation" Nullable="false" Precision="23" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RitchieBlackmoreModelStoreContainer" CdmEntityContainer="RitchieBlackmoreEntities">
+          <EntitySetMapping Name="OperationType">
+            <EntityTypeMapping TypeName="RitchieBlackmoreModel.OperationType">
+              <MappingFragment StoreEntitySet="OperationType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Product">
+            <EntityTypeMapping TypeName="RitchieBlackmoreModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StatisticsOperation">
+            <EntityTypeMapping TypeName="RitchieBlackmoreModel.StatisticsOperation">
+              <MappingFragment StoreEntitySet="StatisticsOperation">
+                <ScalarProperty Name="OperationId" ColumnName="OperationId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="OperationTypeId" ColumnName="OperationTypeId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="DateOperation" ColumnName="DateOperation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="RitchieBlackmoreModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ApplicationId" ColumnName="ApplicationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IsAnonymous" ColumnName="IsAnonymous" />
+                <ScalarProperty Name="LastActivityDate" ColumnName="LastActivityDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteProduct" FunctionName="RitchieBlackmoreModel.Store.DeleteProduct" />
+          <FunctionImportMapping FunctionImportName="GetCountProducts" FunctionName="RitchieBlackmoreModel.Store.GetCountProducts" />
+          <FunctionImportMapping FunctionImportName="GetRangeSortedProducts" FunctionName="RitchieBlackmoreModel.Store.GetRangeSortedProducts" />
+          <FunctionImportMapping FunctionImportName="GetStatisticsProduct" FunctionName="RitchieBlackmoreModel.Store.GetStatisticsProduct">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="RitchieBlackmoreModel.GetStatisticsProduct_Result">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="OperationName" ColumnName="OperationName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="DateOperation" ColumnName="DateOperation" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
