@@ -32,14 +32,14 @@
         //sortorder: "asc", // порядок сортировки
         viewrecords: true,
         editurl: "Products/SaveChange",
-        //onSelectRow: function (id) {
-        //    console.log(id);
-        //    if (id && id != lastsel) {
-        //        jQuery('#jqg').restoreRow(lastsel);
-        //        jQuery('#jqg').editRow(id, true);
-        //        lastsel2 = id;
-        //    }
-        //},
+        onSelectRow: function (id) {
+            console.log(id);
+            if (id && id != lastsel) {
+                jQuery('#jqg').restoreRow(lastsel);
+                jQuery('#jqg').editRow(id, true);
+                lastsel2 = id;
+            }
+        },
         gridComplete: function(){}
         
     });
