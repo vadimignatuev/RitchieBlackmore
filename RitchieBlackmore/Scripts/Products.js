@@ -1,6 +1,8 @@
 ﻿$(document).ready(function () {
-    
-    $("#jqg").jqGrid({
+
+    grid = $("#jqg"),
+
+    grid.jqGrid({
         url: 'Products/GetProductsList',
         datatype: "json",
         mtype: 'POST',
@@ -11,8 +13,9 @@
             root: "rows",
             repeatitems: false
         },
-        colNames: ['Название', 'Цена', ""],
+        colNames: ['','Название', 'Цена', ""],
         colModel: [
+            { name: '_Id', index: '_Id', hidden:true },
             { name: '_Name', index: '_Name', width: 150, stype: 'text', editable: true },
             { name: '_Price', index: '_Price', width: 50, sortable: true, editable: true },
             {
@@ -45,7 +48,7 @@
     });
 
     $("#createNewProductForm").click(function () {
-        var urlAct = $("#createNewProductForm").data('createproducturl')
+        var urlAct = $("#createNewProductForm").data('createproductUrl')
         console.log(urlAct);
 
         var name = $("#newProductName").val();
@@ -74,18 +77,33 @@ function getHtmlNavigationCell(id) {
            
 } 
     
-function motionProduct(options) {
+function motionProduct(id) {
    
-      $('#formsMotionsProduct').dialog({
-        width: 'auto',
-        height: 'auto'
-    });
+    var rowData = grid.getRowData(id);
+    var strTitle = "Приход/расход " + rowData._Name;
+    
+    var href = $("#sectProductGrid").data('createoperationUrl') + "?id=" + id;
+    console.log(href);
+
+    $("<div></div>")
+                .addClass("dialog")
+                .appendTo("body")
+                .dialog({
+                    title: strTitle,
+                    close: function () { $(this).remove() },
+                    //modal: true
+                })
+                .load(href);
+      //$('#formsMotionsProduct').dialog({
+      //  width: 'auto',
+      //  height: 'auto'
+    //});
 }
 
 function editRow(id) {
 
-    jQuery('#jqg').restoreRow(id);
-    jQuery('#jqg').editRow(id, true);
+    grid.restoreRow(id);
+    grid.editRow(id, true);
     changeViewSelRow(id);
 }
 
@@ -100,7 +118,7 @@ function saveChange(id)
 {
     list = jQuery("#jqg").getRowData(id)._Id;
     console.log(list);
-    jQuery("#jqg").saveRow(id
+    grid.saveRow(id
         //{
         //    successfunc: function () {
         //        //return jQuery("#jqg").rowList[id];
@@ -119,7 +137,7 @@ function saveChange(id)
 
 function backEdit(id)
 {
-    jQuery('#jqg').restoreRow(id);
+    grid.restoreRow(id);
     $("#cellNavigationRowNumber" + id).html(getHtmlNavigationCell);
 
 }
@@ -134,7 +152,7 @@ function statisticsProduct(options) {
 
 function deleteColumn(id) {
     $('#deleteDialogForm').dialog();
-    Query('#jqg').delRowData(id);
+    grid.delRowData(id);
 }
  
 
@@ -146,7 +164,7 @@ function status_button_maker_v3(rowId, options, rowObject) {
 
 function clicBebebe() {
     console.log("I am clict");
-    rowid = $("#jqg").getGridParam('selrow');
+    rowid = grid.getGridParam('selrow');
     console.log(rowid);
 }
 

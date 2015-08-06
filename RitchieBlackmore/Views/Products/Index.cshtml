@@ -11,7 +11,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>*@
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
     <script src="@Url.Content("~/Scripts/jquery-2.1.4.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/jquery-ui-1.8.24.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/i18n/grid.locale-ru.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/Products.js")" type="text/javascript"></script>
@@ -30,7 +30,7 @@
                 <button id ="createNewProductForm" type="submit" class="button success">Добавить</button>
            </form>
         </div>
-        <div class="cells">
+        <div id ="sectProductGrid" class="cells" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
             <table id="jqg"></table>
             <div id="jqgPager"></div> 
         </div>

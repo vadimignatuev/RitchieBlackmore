@@ -7,11 +7,11 @@ namespace RitchieBlackmore.Models
 {
     public class OperationModel
     {
-        public int _IdProduct;
+        public Int32 _IdProduct;
 
-        public int _IdOperation;
+        public Int32 _IdOperation;
 
-        public DateTime DataOperation;
+        public DateTime _DataOperation;
 
     }
 }

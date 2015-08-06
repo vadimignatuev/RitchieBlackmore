@@ -19,9 +19,9 @@ namespace RitchieBlackmore.Controllers
         }
 
 
-        public JsonResult GetProductsList(string sidx, string sord, int page, int rows, bool _search)
+        public JsonResult GetProductsList(string sidx, string sord, int? page, int? rows, bool? _search)
         {
-            List<ProductModel> productsList = RitchieBlackmore.Classes.SourseDbFactory.GetSourseDB().GetProductsInRangeSortByField(page * rows, rows, "Quantity", true);
+            List<ProductModel> productsList = RitchieBlackmore.Classes.SourseDbFactory.GetSourseDB().GetProductsInRangeSortByField((page.Value-1) * rows.Value, rows.Value, "Id", true);
             JsonResult result = new  JsonResult()
             	                 {
                                      Data = new { page = page, total = 100, records = 1000, rows = productsList }
@@ -29,7 +29,7 @@ namespace RitchieBlackmore.Controllers
             return result;
         }
 
-        public JsonResult GetStatisticProduct(string sidx, string sord, int page, int rows, bool _search)
+        public JsonResult GetStatisticProduct(string sidx, string nd, int page, int rows, bool _search)
         {
             List<OperationDataModel> statisticsList = RitchieBlackmore.Classes.SourseDbFactory.GetSourseDB().GetOperationStatistcs(7, 1, 10, "UserName", true);
             JsonResult result = new JsonResult()
@@ -49,6 +49,19 @@ namespace RitchieBlackmore.Controllers
         public void CreateNewProduct(string name, string price)
         {
             int i = 4;
+        }
+
+        public ActionResult CreateProductOperation(Int32? Id)
+        {
+            OperationModel newOperation = new OperationModel();
+            newOperation._IdProduct = Id.Value;
+            return PartialView("CreateOperation", newOperation);
+        }
+
+        [HttpPost]
+        public ActionResult CreateProductOperation(OperationModel obj)
+        {
+            return View("Index");
         }
     }
 }
