@@ -44,5 +44,11 @@ namespace RitchieBlackmore.Controllers
         {
             int s = 9;
         }
+
+
+        public void CreateNewProduct(string name, string price)
+        {
+            int i = 4;
+        }
     }
 }

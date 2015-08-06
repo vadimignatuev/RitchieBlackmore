@@ -32,28 +32,38 @@
         //sortorder: "asc", // порядок сортировки
         viewrecords: true,
         editurl: "Products/SaveChange",
-        onSelectRow: function (id) {
-            console.log(id);
-            if (id && id != lastsel) {
-                jQuery('#jqg').restoreRow(lastsel);
-                jQuery('#jqg').editRow(id, true);
-                lastsel2 = id;
-            }
-        },
+        //onSelectRow: function (id) {
+        //    console.log(id);
+        //    if (id && id != lastsel) {
+        //        jQuery('#jqg').restoreRow(lastsel);
+        //        jQuery('#jqg').editRow(id, true);
+        //        lastsel2 = id;
+        //    }
+        //},
         gridComplete: function(){}
         
     });
 
-    $("#jqg").jqGrid('navButtonAdd', '#jqgPager',
-    {
-        caption: ""/*"Show"*/, buttonicon: "", title: "Show Link",
-        onClickButton: function () {
-            var grid = $("#jqg");
-            var rowid = grid.jqGrid('getGridParam', 'selrow');
-            window.location = grid.jqGrid('getCell', rowid, 'dataUrl');
-        }
+    $("#createNewProductForm").click(function () {
+        var urlAct = $("#createNewProductForm").data('createproducturl')
+        console.log(urlAct);
+
+        var name = $("#newProductName").val();
+        var price = $("#newProductPrice").val();
+        var parStr = 'name=' + name + '&price=' + price;
+
+        
+        $.ajax({
+            type: "POST",
+            url: urlAct,
+            data: parStr,
+            success: function () {
+                $("#createNewProductForm").clearForm();
+            }
+        });
     });
 
+    
 });
 
 function getHtmlNavigationCell(id) {
@@ -65,6 +75,7 @@ function getHtmlNavigationCell(id) {
 } 
     
 function motionProduct(options) {
+   
       $('#formsMotionsProduct').dialog({
         width: 'auto',
         height: 'auto'
@@ -140,41 +151,41 @@ function clicBebebe() {
 }
 
 
-    function initStatistikGrid(rowId) {
+function initStatistikGrid(rowId) {
 
-        $("#gridStatistics").jqGrid({
-            url: 'Products/GetStatisticProduct',
-            datatype: "json",
-            mtype: 'POST',
-            jsonReader: {
-                page: "page",
-                total: "total",
-                records: "records",
-                root: "rows",
-                repeatitems: false
-            },
-            colNames: ['Оператор', 'Тип операции', "Количество товара", "Количество товара"],
-            colModel: [
-                { name: '_OperatorName', index: '_OperatorName', width: 150, sortable: true, stype: 'text' },
-                { name: '_OperationName', index: '_OperationName', width: 50, sortable: true },
-                { name: '_Quantity', index: '_Quantity', width: 50, sortable: true },
-                { name: '_DateOperation', index: '_DateOperation', width: 100, sortable: true },
-            ],
-            rownumbers: true,
-            viewrecords: true,
-            width: 1100,
-            height: "100%",
-            pager: '#gridStatisticsPager',
-            rowNum: 10,
-            rowList: [10, 25, 50, 100],
-            //rowNum: 20, // число отображаемых строк
-            loadonce: false, // загрузка только один раз
-            //sortname: '_OperatorName', // сортировка по умолчанию по столбцу Id
-            //sortorder: "asc", // порядок сортировки
-            viewrecords: true,
+    $("#gridStatistics").jqGrid({
+        url: 'Products/GetStatisticProduct',
+        datatype: "json",
+        mtype: 'POST',
+        jsonReader: {
+            page: "page",
+            total: "total",
+            records: "records",
+            root: "rows",
+            repeatitems: false
+        },
+        colNames: ['Оператор', 'Тип операции', "Количество товара", "Количество товара"],
+        colModel: [
+            { name: '_OperatorName', index: '_OperatorName', width: 150, sortable: true, stype: 'text' },
+            { name: '_OperationName', index: '_OperationName', width: 50, sortable: true },
+            { name: '_Quantity', index: '_Quantity', width: 50, sortable: true },
+            { name: '_DateOperation', index: '_DateOperation', width: 100, sortable: true },
+        ],
+        rownumbers: true,
+        viewrecords: true,
+        width: 1100,
+        height: "100%",
+        pager: '#gridStatisticsPager',
+        rowNum: 10,
+        rowList: [10, 25, 50, 100],
+        //rowNum: 20, // число отображаемых строк
+        loadonce: false, // загрузка только один раз
+        //sortname: '_OperatorName', // сортировка по умолчанию по столбцу Id
+        //sortorder: "asc", // порядок сортировки
+        viewrecords: true,
         
-        });
-    }
+    });
+}
 
 
 
