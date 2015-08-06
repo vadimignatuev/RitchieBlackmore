@@ -3,7 +3,7 @@
     grid = $("#jqg"),
 
     grid.jqGrid({
-        url: 'Products/GetProductsList',
+        url: "Products/GetProductsList",
         datatype: "json",
         mtype: 'POST',
         jsonReader: {

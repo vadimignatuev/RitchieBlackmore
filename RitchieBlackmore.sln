@@ -1,16 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Web
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RitchieBlackmore", "RitchieBlackmore\RitchieBlackmore.csproj", "{C549DEE3-C541-49AF-82E3-68B6CD9BB85C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RitchieBlackmore.Tests", "RitchieBlackmore.Tests\RitchieBlackmore.Tests.csproj", "{681B14FB-14E1-4056-ABFF-0D451C615EBF}"
-EndProject
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E7866BF9-B102-43F0-B1C3-881E9C2811E2}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RitchieBlackmore", "RitchieBlackmore\RitchieBlackmore.csproj", "{C549DEE3-C541-49AF-82E3-68B6CD9BB85C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RitchieBlackmore.Tests", "RitchieBlackmore.Tests\RitchieBlackmore.Tests.csproj", "{681B14FB-14E1-4056-ABFF-0D451C615EBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

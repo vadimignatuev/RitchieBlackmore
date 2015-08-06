@@ -61,7 +61,7 @@ namespace RitchieBlackmore.Controllers
         [HttpPost]
         public ActionResult CreateProductOperation(OperationModel obj)
         {
-            return View("Index");
+            return RedirectToAction("Index");
         }
     }
 }
