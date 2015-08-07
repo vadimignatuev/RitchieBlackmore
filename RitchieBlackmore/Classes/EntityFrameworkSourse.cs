@@ -13,12 +13,15 @@ namespace RitchieBlackmore.Classes
     public class EntityFrameworkSourse : RitchieBlackmore.Interfaces.ISourseDb
     {
 
-        public ProductModel GetProductById(int id)
+        public ProductModel GetProductById(Int32 id)
         {
-            throw new NotImplementedException();
+            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            {
+                return Mapper.Map<Product, ProductModel>(db.Product.FirstOrDefault(it => it.Id == id));
+            }
         }
 
-        public List<ProductModel> GetProductsInRangeSortByField(int startPosition, int count, string field, bool SortOrder)
+        public List<ProductModel> GetRangeSortedProducts(Int32 startPosition, Int32 count, String field, Boolean SortOrder)
         {
             List<Models.ProductModel> listProducts;
 
@@ -30,7 +33,7 @@ namespace RitchieBlackmore.Classes
             return listProducts;
         }
 
-        public List<OperationDataModel> GetOperationStatistcs(int productId, int startPosition, int count, string field, bool SortOrder)
+        public List<OperationDataModel> GetStatisticsProduct(Int32 productId, Int32 startPosition, Int32 count, String field, Boolean SortOrder)
         {
             Mapper.CreateMap<GetStatisticsProduct_Result, OperationDataModel>()
                 .ForMember(op => op._OperatorName, conf => conf.MapFrom(ol => ol.UserName));
@@ -39,30 +42,50 @@ namespace RitchieBlackmore.Classes
             
             using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
             {
-                //var s = db.GetStatisticsProduct(productId, startPosition, count, field, SortOrder).To<OperationDataModel>().ToList();
-                //listProducts = s.Select(it => Mapper.DynamicMap<Models.OperationDataModel>(it)).ToList();
                 listStatistics = Mapper.Map<ObjectResult<GetStatisticsProduct_Result>, List<OperationDataModel>>(db.GetStatisticsProduct(productId, startPosition, count, field, SortOrder));
             }
 
             return listStatistics;
         }
 
-        public void AddNewOperation()
+        public void AddNewOperation(OperationModel operation, Guid userId, DateTime dateOperation)
         {
-            throw new NotImplementedException();
+            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            {
+                StatisticsOperation newOperation = new StatisticsOperation();
+                newOperation.OperationTypeId = operation._IdOperation;
+                newOperation.ProductId = operation._IdProduct;
+                newOperation.Quantity = operation._Quantity;
+                newOperation.UserId = userId;
+                newOperation.DateOperation = dateOperation;
+                db.StatisticsOperation.Add(newOperation);
+                db.SaveChanges();
+            }
         }
 
         public void AddNewProduct(Models.ProductModel product)
         {
-            throw new NotImplementedException();
+            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            {
+                db.Product.Add(Mapper.Map<ProductModel, Product>(product));
+                db.SaveChanges();
+            }
         }
 
         public void UpdateProduct(ProductModel product)
         {
-            throw new NotImplementedException();
+            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            {
+                Product updatingProduct = db.Product.FirstOrDefault(it => it.Id == product._Id);
+                if (updatingProduct != null)
+                {
+                    updatingProduct = Mapper.Map<ProductModel, Product>(product);
+                    db.SaveChanges();
+                }
+            }
         }
 
-        public void DeleteProduct(int id)
+        public void DeleteProduct(Int32 id)
         {
             using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
             {

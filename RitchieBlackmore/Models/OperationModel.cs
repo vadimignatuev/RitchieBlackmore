@@ -11,7 +11,6 @@ namespace RitchieBlackmore.Models
 
         public Int32 _IdOperation;
 
-        public DateTime _DataOperation;
-
+        public Int32 _Quantity;
     }
 }

@@ -13,12 +13,12 @@
     <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/i18n/grid.locale-ru.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/Products.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Products2.js")" type="text/javascript"></script>
 
 
-<div class="grid">
-    <div class="row cells4">
-        <div class="cells" >
+<div>
+    <div >
+        <div >
             @*<form id ="addProductForm", data-createproduct-url="@Url.Action("CreateNewProduct", "Products")">
                 <div class="input-control text">
                     <input id ="newProductName" type="text" name="newProductName"  value="">
@@ -29,11 +29,11 @@
                 <button id ="createNewProductForm" type="submit" class="button success">Добавить</button>
            </form>*@
         </div>
-        <div id ="sectProductGrid" class="cells" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
+        <div id ="sectProductGrid" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
             <table id="jqg"></table>
             <div id="jqgPager"></div> 
         </div>
-        <div class="cells">
+        <div>
             
         </div>  
     </div>
