@@ -13,6 +13,7 @@ namespace RitchieBlackmore.Classes
 
         public OperationMananenger()
         {
+            _DbOperationType = new Dictionary<string, int>();
             _DbOperationType.Add("arrival", 1);
             _DbOperationType.Add("expense", 2);
         }
@@ -24,16 +25,16 @@ namespace RitchieBlackmore.Classes
 
         private void UpdateProductAfterOperation(OperationModel operation) 
         {
-            ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(operation._IdProduct);
+            ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(operation.IdProduct);
 
-            if (operation._IdOperation == GetOperationId("arrival"))
+            if (operation.IdOperation == GetOperationId("arrival"))
             {
-                product._Quantity = product._Quantity - operation._Quantity;
+                product.Quantity = product.Quantity - operation.Quantity;
             }
 
-            if (operation._IdOperation == GetOperationId("expense"))
+            if (operation.IdOperation == GetOperationId("expense"))
             {
-                product._Quantity = product._Quantity + operation._Quantity;
+                product.Quantity = product.Quantity + operation.Quantity;
             }
 
             SourseDbFactory.GetSourseDB().UpdateProduct(product);

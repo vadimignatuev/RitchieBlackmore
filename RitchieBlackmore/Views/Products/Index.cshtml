@@ -2,23 +2,20 @@
     ViewBag.Title = "Index";
 }
 
-@*<script src="@Url.Content("~/Scripts/jquery-2.1.4.js")" type="text/javascript"></script>*@
-    <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/themes/base/all.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/jquery.jqGrid/ui.jqgrid.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Products.css")" rel="stylesheet" type="text/css" />
     
-@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>*@
-    <script src="@Url.Content("~/Scripts/jquery-2.1.4.min.js")" type="text/javascript"></script>
+    @*<script src="@Url.Content("~/Scripts/jquery-2.1.4.min.js")" type="text/javascript"></script>*@
     <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.min.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/i18n/grid.locale-ru.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" type="text/javascript"></script>
-    <script src="@Url.Content("~/Scripts/Products2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/Products.js")" type="text/javascript"></script>
 
 
 <div>
     <div >
-        <div >
+        <div class ="newProduct">
             @*<form id ="addProductForm", data-createproduct-url="@Url.Action("CreateNewProduct", "Products")">
                 <div class="input-control text">
                     <input id ="newProductName" type="text" name="newProductName"  value="">
@@ -27,13 +24,15 @@
                     <input id ="newProductPrice" type="text" name="price"  value="">
                 </div>
                 <button id ="createNewProductForm" type="submit" class="button success">Добавить</button>
+                
            </form>*@
+               @Html.Partial("CreateNewProduct") 
         </div>
-        <div id ="sectProductGrid" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
+        <div class ="productGrid" id ="sectProductGrid" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
             <table id="jqg"></table>
             <div id="jqgPager"></div> 
         </div>
-        <div>
+        <div class ="statistic">
             
         </div>  
     </div>
@@ -46,3 +45,11 @@
 <div id ="deleteDialogForm" style =" display:none">
     Вы действительно хотите удалить строку
 </div>
+
+<div id ="productStatistic" style =" display:none" data-productStatistic-url="@Url.Action("ProductStatistics", "Products")">
+   @Html.Partial("ProductStatistics")
+</div>
+
+@Ajax.ActionLink("Statistic", "ProductStatistics", new { productStatistic = "" },
+                                    new AjaxOptions { UpdateTargetId = "productStatistic" },
+                                    new { @id = "productStatisticsLink", @style = "visibility:hidden;" })

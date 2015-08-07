@@ -21,19 +21,41 @@ namespace RitchieBlackmore.Controllers
         }
 
 
-        public JsonResult GetProductsList(string sidx, string sord, int? page, int? rows, bool? _search)
+        public JsonResult GetProductsList(String sidx, String sord, Int32 page, Int32 rows, Boolean _search)
         {
-            List<ProductModel> productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page.Value-1) * rows.Value, rows.Value, "Id", true);
+            List<ProductModel> productsList;
+            
+            if (sord == "asc")
+            {
+                productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page - 1) * rows, rows, "Id", true);
+            }
+            else 
+            {
+                productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page - 1) * rows, rows, "Id", false);
+            }            
+
+            int countRows = SourseDbFactory.GetSourseDB().GetCountProduct();
             JsonResult result = new  JsonResult()
             	                 {
-                                     Data = new { page = page, total = 100, records = 1000, rows = productsList }
+                                     Data = new { page = page, total = countRows/rows, records = countRows, rows = productsList }
 	                             };
             return result;
         }
 
-        public JsonResult GetStatisticProduct(string sidx, string nd, int page, int rows, bool _search)
+        public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean _search, String userData)
         {
-            List<OperationDataModel> statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", true);
+            List<OperationDataModel> statisticsList;
+
+            if (sord == "asc")
+            {
+                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", _search);
+            }
+            else
+            {
+                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", _search);
+            }            
+
+            int countRows = SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(7);
             JsonResult result = new JsonResult()
             {
                 Data = new { page = page, total = 100, records = 1000, rows = statisticsList }
@@ -42,24 +64,37 @@ namespace RitchieBlackmore.Controllers
         }
 
         [HttpPost]
-        public void SaveChange(string _Name, decimal? _Price, int? id)
+        public void SaveChange(Int32 _Id, String _Name, Decimal _Price)
         {
-            int s = 9;
+            ProductModel updatingProduct = SourseDbFactory.GetSourseDB().GetProductById(_Id);
+            updatingProduct.Name = _Name;
+            updatingProduct.Price = _Price;
+            SourseDbFactory.GetSourseDB().UpdateProduct(updatingProduct);
         }
 
-
-        public void CreateNewProduct(string name, string price)
+        [HttpGet]
+        public ActionResult CreateNewProduct()
         {
             ProductModel newProduct = new ProductModel();
-            newProduct._Name = name;
-            newProduct._Price = Convert.ToDecimal(price);
-            newProduct._Quantity = 0;
+            return PartialView(newProduct);
+        }
+
+        [HttpPost]
+        public void CreateNewProduct(ProductModel newProduct)
+        {
+            newProduct.Quantity = 0;
+        }
+
+        public ActionResult ProductStatistics(int id)
+        {
+            ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(id);
+            return PartialView(product); 
         }
 
         public ActionResult CreateProductOperation(Int32? Id)
         {
             OperationModel newOperation = new OperationModel();
-            newOperation._IdProduct = Id.Value;
+            newOperation.IdProduct = Id.Value;
             return PartialView("CreateOperation", newOperation);
         }
 

@@ -7,12 +7,12 @@ namespace RitchieBlackmore.Models
 {
     public class OperationDataModel
     {
-        public String _OperatorName;
+        public String OperatorName {get; set;}
 
-        public String _OperationName;
+        public String OperationName { get; set; }
 
-        public Int32 _Quantity;
+        public Int32 Quantity { get; set; }
 
-        public DateTime _DateOperation;  
+        public DateTime DateOperation { get; set; }
     }
 }

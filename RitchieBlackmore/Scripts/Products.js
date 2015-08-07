@@ -13,11 +13,11 @@
             root: "rows",
             repeatitems: false
         },
-        colNames: ['','Название', 'Цена', ""],
+        colNames: ['Id','Название', 'Цена', ""],
         colModel: [
-            { name: '_Id', index: '_Id', hidden:true },
-            { name: '_Name', index: '_Name', width: 150, stype: 'text', editable: true },
-            { name: '_Price', index: '_Price', width: 50, sortable: true, editable: true },
+            { name: 'Id', index: 'Id', hidden: true, editable: true },
+            { name: 'Name', index: 'Name', width: 150, stype: 'text', editable: true },
+            { name: 'Price', index: 'Price', width: 50, sortable: true, editable: true },
             {
                 name: 'status', index: status, formatter: status_button_maker_v3
             }
@@ -31,18 +31,17 @@
         rowList: [10, 25, 50, 100],
         //rowNum: 20, // число отображаемых строк
         loadonce: false, // загрузка только один раз
-        sortname: 'Name', // сортировка по умолчанию по столбцу Id
-        //sortorder: "asc", // порядок сортировки
+        sortname: 'Id', // сортировка по умолчанию по столбцу Id
+        sortorder: "asc", // порядок сортировки
         viewrecords: true,
         editurl: "Products/SaveChange",
-        //onSelectRow: function (id) {
-        //    console.log(id);
-        //    if (id && id != lastsel) {
-        //        jQuery('#jqg').restoreRow(lastsel);
-        //        jQuery('#jqg').editRow(id, true);
-        //        lastsel2 = id;
-        //    }
-        //},
+        onSelectRow: function (rowid, status, e) {
+            console.log(rowid);
+            $("#productStatistic").css('display', 'block');
+            console.log($("#productStatistic").css('display'));
+            var Id = grid.getRowData(rowid).Id;
+            clickProductStatisticLink(Id, e);
+        },
         gridComplete: function(){}
         
     });
@@ -70,10 +69,10 @@
 });
 
 function getHtmlNavigationCell(id) {
-    return   "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + id + ")\">" + "Движение товара</button>" +
+    return "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + id + ")\">" + "Движение товара</button>" +
                "<button class=\"ver3_statusbutton\" onclick=\"editRow(" + id + ")\">" + "Редактировать" + "</button>" +
                "<button class=\"ver3_statusbutton\" onclick=\"deleteColumn(" + id + ")\">" + "Удалить" + "</button>" +
-                "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + id + ")\">" + "Окно статистики</button>" 
+                "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + id + ")\">" + "Окно статистики</button>"
            
 } 
     
@@ -116,22 +115,24 @@ function changeViewSelRow(id) {
 
 function saveChange(id)
 {
-    list = jQuery("#jqg").getRowData(id)._Id;
+    var Id = grid.getRowData(id).Id;
     console.log(list);
-    grid.saveRow(id
-        //{
-        //    successfunc: function () {
-        //        //return jQuery("#jqg").rowList[id];
+    grid.saveRow(id,
+        {
+            successfunc: function () {
+                grid.restoreRow(id);
+                backEdit(id);
+                return true;
+            }
+        }
+        //    {
+        //        extraparam: { _Id: list }
+
         //    }
-        //},
-        //{
-        //    extraparam: { _Id : jQuery("#jqg").rowList[id]._Id }
-            
-        //}
-        //aftersavefunc,
-        //errorfunc,
-        //afterrestorefunc
-        );
+            //aftersavefunc,
+            //errorfunc,
+            //afterrestorefunc
+    );
     
 }
 
@@ -168,6 +169,34 @@ function clicBebebe() {
     console.log(rowid);
 }
 
+function clickProductStatisticLink(id, e) {
+
+    var href = $("#productStatistic").data('productstatisticUrl');
+    console.log(href);
+    href = href + "?id=" + encodeURIComponent(id);
+    console.log(href);
+    $("#productStatisticsLink").attr("href", href);
+
+    clickHreh("#productStatisticsLink", e);
+}
+
+function clickHreh(hrefId, e) {
+
+    var link = $(hrefId)[0];
+    var linkEvent = null;
+    if (document.createEvent) {
+        linkEvent = document.createEvent('MouseEvents');
+        linkEvent.initEvent('click', true, true);
+        link.dispatchEvent(linkEvent);
+    }
+    else if (document.createEventObject) {
+        linkEvent = document.createEventObject();
+        link.fireEvent('onclick', linkEvent);
+    }
+
+    e.preventDefault();
+}
+
 
 function initStatistikGrid(rowId) {
 
@@ -180,15 +209,17 @@ function initStatistikGrid(rowId) {
             total: "total",
             records: "records",
             root: "rows",
-            repeatitems: false
+            repeatitems: false,
+            userdata: "userdata"
         },
         colNames: ['Оператор', 'Тип операции', "Количество товара", "Количество товара"],
         colModel: [
-            { name: '_OperatorName', index: '_OperatorName', width: 150, sortable: true, stype: 'text' },
-            { name: '_OperationName', index: '_OperationName', width: 50, sortable: true },
-            { name: '_Quantity', index: '_Quantity', width: 50, sortable: true },
-            { name: '_DateOperation', index: '_DateOperation', width: 100, sortable: true },
+            { name: 'OperatorName', index: 'OperatorName', width: 150, sortable: true, stype: 'text' },
+            { name: 'OperationName', index: 'OperationName', width: 50, sortable: true },
+            { name: 'Quantity', index: 'Quantity', width: 50, sortable: true },
+            { name: 'DateOperation', index: 'DateOperation', width: 100, sortable: true },
         ],
+        userData: rowId,
         rownumbers: true,
         viewrecords: true,
         width: 1100,

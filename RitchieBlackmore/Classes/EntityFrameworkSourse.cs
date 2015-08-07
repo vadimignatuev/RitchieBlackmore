@@ -12,12 +12,26 @@ namespace RitchieBlackmore.Classes
 {
     public class EntityFrameworkSourse : RitchieBlackmore.Interfaces.ISourseDb
     {
+        public EntityFrameworkSourse()
+        {
+            Mapper.CreateMap<Product, ProductModel>()
+                .ForMember(op => op.Id, conf => conf.MapFrom(ol => ol.Id))
+                .ForMember(op => op.Name, conf => conf.MapFrom(ol => ol.Name))
+                .ForMember(op => op.Price, conf => conf.MapFrom(ol => ol.Price))
+                .ForMember(op => op.Quantity, conf => conf.MapFrom(ol => ol.Quantity));
+
+            Mapper.CreateMap<ProductModel, Product>()
+                .ForMember(op => op.Id, conf => conf.MapFrom(ol => ol.Id))
+                .ForMember(op => op.Name, conf => conf.MapFrom(ol => ol.Name))
+                .ForMember(op => op.Price, conf => conf.MapFrom(ol => ol.Price))
+                .ForMember(op => op.Quantity, conf => conf.MapFrom(ol => ol.Quantity));
+        }
 
         public ProductModel GetProductById(Int32 id)
         {
             using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
             {
-                return Mapper.Map<Product, ProductModel>(db.Product.FirstOrDefault(it => it.Id == id));
+                return Mapper.Map<ProductModel>(db.Product.FirstOrDefault(it => it.Id == id));
             }
         }
 
@@ -36,7 +50,7 @@ namespace RitchieBlackmore.Classes
         public List<OperationDataModel> GetStatisticsProduct(Int32 productId, Int32 startPosition, Int32 count, String field, Boolean SortOrder)
         {
             Mapper.CreateMap<GetStatisticsProduct_Result, OperationDataModel>()
-                .ForMember(op => op._OperatorName, conf => conf.MapFrom(ol => ol.UserName));
+                .ForMember(op => op.OperatorName, conf => conf.MapFrom(ol => ol.UserName));
             
             List<OperationDataModel> listStatistics;
             
@@ -53,9 +67,9 @@ namespace RitchieBlackmore.Classes
             using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
             {
                 StatisticsOperation newOperation = new StatisticsOperation();
-                newOperation.OperationTypeId = operation._IdOperation;
-                newOperation.ProductId = operation._IdProduct;
-                newOperation.Quantity = operation._Quantity;
+                newOperation.OperationTypeId = operation.IdOperation;
+                newOperation.ProductId = operation.IdProduct;
+                newOperation.Quantity = operation.Quantity;
                 newOperation.UserId = userId;
                 newOperation.DateOperation = dateOperation;
                 db.StatisticsOperation.Add(newOperation);
@@ -76,10 +90,11 @@ namespace RitchieBlackmore.Classes
         {
             using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
             {
-                Product updatingProduct = db.Product.FirstOrDefault(it => it.Id == product._Id);
+                Product updatingProduct = db.Product.FirstOrDefault(it => it.Id == product.Id);
                 if (updatingProduct != null)
                 {
-                    updatingProduct = Mapper.Map<ProductModel, Product>(product);
+                    updatingProduct.Name = product.Name;
+                    updatingProduct.Price = product.Price;
                     db.SaveChanges();
                 }
             }
@@ -90,6 +105,22 @@ namespace RitchieBlackmore.Classes
             using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
             {
                 db.DeleteProduct(id);
+            }
+        }
+
+        public Int32 GetCountProduct() 
+        {
+            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            {
+                return db.Product.Count();
+            }
+        }
+
+        public Int32 GetCountOperationWithProduct(Int32 id)
+        {
+            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            {
+                return db.StatisticsOperation.Count();
             }
         }
     }

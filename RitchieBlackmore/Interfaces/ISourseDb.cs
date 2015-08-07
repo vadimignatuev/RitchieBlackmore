@@ -22,5 +22,8 @@ namespace RitchieBlackmore.Interfaces
 
         void DeleteProduct(Int32 id);
 
+        Int32 GetCountProduct();
+
+        Int32 GetCountOperationWithProduct(Int32 id);
     }
 }

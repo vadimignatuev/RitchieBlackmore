@@ -4,3 +4,31 @@
         color: red;
 }
 
+.baseBloc {
+    height: 100%;
+    position: relative;
+    float: left;
+
+}
+
+.newProduct .baseBloc{
+    height: 100%;
+    position: relative;
+    float: left;
+    width: 20%;
+}
+
+.productGrid .baseBloc{
+    height: 100%;
+    position: relative;
+    float: left;
+    width: 60%;
+}
+
+.statistic .baseBloc{
+    height: 100%;
+    position: relative;
+    float: left;
+    width: 20%;
+}
+

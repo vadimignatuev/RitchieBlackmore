@@ -7,14 +7,14 @@ namespace RitchieBlackmore.Models
 {
     public class ProductModel
     {
-        public Int32 _Id;
+        public Int32 Id {get; set;}
 
-        public String _Name;
+        public String Name { get; set; }
 
-        public Decimal _Price;
+        public Decimal Price { get; set; }
 
-        public Int32 _Quantity;
+        public Int32 Quantity { get; set; }
 
-        public Decimal _TotalCost;
+        public Decimal TotalCost { get; set; }
     }
 }
