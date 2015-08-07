@@ -1,10 +1,10 @@
-﻿using RitchieBlackmore.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using RitchieBlackmore.Models;
 
 namespace RitchieBlackmore.Controllers
 {
@@ -14,7 +14,7 @@ namespace RitchieBlackmore.Controllers
         // GET: /Product/
 
         public ActionResult Index()
-        {
+        {  
             return View();
         }
 
@@ -47,7 +47,7 @@ namespace RitchieBlackmore.Controllers
 
 
         public void CreateNewProduct(string name, string price)
-        {
+        {   
             int i = 4;
         }
 
