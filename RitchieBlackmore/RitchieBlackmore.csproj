@@ -149,6 +149,7 @@
     <Compile Include="Classes\EntityFramworcDbContex\Users.cs">
       <DependentUpon>RitchieBlackmore.tt</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Pager.cs" />
     <Compile Include="Classes\SourseDbFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
