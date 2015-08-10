@@ -36,11 +36,12 @@
         viewrecords: true,
         editurl: "Products/SaveChange",
         onSelectRow: function (rowid, status, e) {
-            console.log(rowid);
+            console.log("work clickProductStatisticLink");
             $("#productStatistic").css('display', 'block');
             console.log($("#productStatistic").css('display'));
             var Id = grid.getRowData(rowid).Id;
             clickProductStatisticLink(Id, e);
+            //getProductStatistic(Id);
         },
         gridComplete: function(){}
         
@@ -169,6 +170,18 @@ function clicBebebe() {
     console.log(rowid);
 }
 
+function getProductStatistic(id) {
+    console.log("get partial view");
+    var url = $("#productStatistic").data('productstatisticUrl');
+    $("#productStatistic").load(url + "?id=" + id);
+    
+    //$.post(url, { id: id })
+    // .done(function (respone) {
+    //     $("#listOfCustomers").html(response);
+    // });
+
+}
+
 function clickProductStatisticLink(id, e) {
 
     var href = $("#productStatistic").data('productstatisticUrl');
@@ -196,6 +209,13 @@ function clickHreh(hrefId, e) {
 
     e.preventDefault();
 }
+
+function saccessCreateNewProduct() {
+    $("#createNewProduct").trigger('reset');
+    grid.trigger("reloadGrid", [{ current: true }]);
+}
+
+
 
 
 function initStatistikGrid(rowId) {
