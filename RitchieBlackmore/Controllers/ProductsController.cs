@@ -69,17 +69,17 @@ namespace RitchieBlackmore.Controllers
             return result;
         }
 
-        public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean _search, String userData)
+        public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean _search, String userData, String keyword)
         {
             List<OperationDataModel> statisticsList;
 
             if (sord == "asc")
             {
-                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", _search);
+                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", true);
             }
             else
             {
-                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", _search);
+                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", true);
             }            
 
             int countRows = SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(7);
@@ -91,7 +91,7 @@ namespace RitchieBlackmore.Controllers
         }
 
         //[HttpPost]
-        public void SaveChange(Int32 _Id, String _Name, Decimal _Price)
+        public void SaveChange(Int32? _Id, String _Name, Decimal _Price)
         {
             ProductModel updatingProduct = SourseDbFactory.GetSourseDB().GetProductById(_Id);
             updatingProduct.Name = _Name;
@@ -142,5 +142,10 @@ namespace RitchieBlackmore.Controllers
               // operationManager.PerformOperation(operation);
             return PartialView("ProductStatistics");
         }
+
+        //public ActionResult DeleteRow(Int32 id)
+        //{
+        //    return true;
+        //}
     }
 }

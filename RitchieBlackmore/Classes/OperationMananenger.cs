@@ -44,6 +44,7 @@ namespace RitchieBlackmore.Classes
         {
             MembershipUser mu = Membership.GetUser();
             Guid userId = (Guid)mu.ProviderUserKey;
+            operation.IdOperation = Convert.ToInt32(operation.choice);
             this.UpdateProductAfterOperation(operation);
             SourseDbFactory.GetSourseDB().AddNewOperation(operation, userId, DateTime.Now);
         }

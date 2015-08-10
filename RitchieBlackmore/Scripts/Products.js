@@ -47,32 +47,12 @@
         
     });
 
-    $("#createNewProductForm").click(function () {
-        var urlAct = $("#createNewProductForm").data('createproductUrl')
-        console.log(urlAct);
-
-        var name = $("#newProductName").val();
-        var price = $("#newProductPrice").val();
-        var parStr = 'name=' + name + '&price=' + price;
-
-        
-        $.ajax({
-            type: "POST",
-            url: urlAct,
-            data: parStr,
-            success: function () {
-                $("#createNewProductForm").clearForm();
-            }
-        });
-    });
-
-    
 });
 
 function getHtmlNavigationCell(id) {
     return "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + id + ")\">" + "Движение товара</button>" +
                "<button class=\"ver3_statusbutton\" onclick=\"editRow(" + id + ")\">" + "Редактировать" + "</button>" +
-               "<button class=\"ver3_statusbutton\" onclick=\"deleteColumn(" + id + ")\">" + "Удалить" + "</button>" +
+               "<button class=\"ver3_statusbutton\" onclick=\"fnOpenNormalDialog(" + id + ")\">" + "Удалить" + "</button>" +
                 "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + id + ")\">" + "Окно статистики</button>"
            
 } 
@@ -117,7 +97,7 @@ function changeViewSelRow(id) {
 function saveChange(id)
 {
     var Id = grid.getRowData(id).Id;
-    console.log(list);
+    console.log(Id);
     grid.saveRow(id,
         {
             successfunc: function () {
@@ -144,8 +124,8 @@ function backEdit(id)
 
 }
 
-function statisticsProduct(options) {
-    initStatistikGrid(1);
+function statisticsProduct(id) {
+    initStatistikGrid(id);
     $('#formsStatisticsProduct').dialog({
         width: 'auto',
         height: 'auto'
@@ -164,11 +144,6 @@ function status_button_maker_v3(rowId, options, rowObject) {
         "</div>"
 }
 
-function clicBebebe() {
-    console.log("I am clict");
-    rowid = grid.getGridParam('selrow');
-    console.log(rowid);
-}
 
 function getProductStatistic(id) {
     console.log("get partial view");
@@ -224,6 +199,7 @@ function initStatistikGrid(rowId) {
         url: 'Products/GetStatisticProduct',
         datatype: "json",
         mtype: 'POST',
+        postData: { 'keyword': function () { return "10"; } },
         jsonReader: {
             page: "page",
             total: "total",
@@ -252,8 +228,45 @@ function initStatistikGrid(rowId) {
         //sortname: '_OperatorName', // сортировка по умолчанию по столбцу Id
         //sortorder: "asc", // порядок сортировки
         viewrecords: true,
+        onPaging: function (pgButton) {
+            console.log(pgButton);
+        }
         
     });
+}
+
+function fnOpenNormalDialog(id) {
+    $("#dialog-confirm").html("Confirm Dialog Box");
+
+    console.log("I in fnOpenNormalDialog");
+    // Define the Dialog and its properties.
+    $("#dialog-confirm").dialog({
+        resizable: false,
+        modal: true,
+        title: "Modal",
+        height: 250,
+        width: 400,
+        buttons: {
+            "Yes": function () {
+                $(this).dialog('close');
+                callback(true);
+            },
+            "No": function () {
+                $(this).dialog('close');
+                callback(false);
+            }
+        }
+    });
+}
+
+$('#btnOpenDialog').click(fnOpenNormalDialog);
+
+function callback(value) {
+    if (value) {
+        alert("Confirmed");
+    } else {
+        alert("Rejected");
+    }
 }
 
 
