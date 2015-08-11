@@ -69,7 +69,7 @@ namespace RitchieBlackmore.Controllers
             return result;
         }
 
-        public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean _search, String userData, String keyword)
+        public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean _search, Int32? productId)
         {
             List<OperationDataModel> statisticsList;
 
@@ -91,11 +91,11 @@ namespace RitchieBlackmore.Controllers
         }
 
         //[HttpPost]
-        public void SaveChange(Int32? _Id, String _Name, Decimal _Price)
+        public void SaveChange(Int32 Id, String Name, Decimal Price)
         {
-            ProductModel updatingProduct = SourseDbFactory.GetSourseDB().GetProductById(_Id);
-            updatingProduct.Name = _Name;
-            updatingProduct.Price = _Price;
+            ProductModel updatingProduct = SourseDbFactory.GetSourseDB().GetProductById(Id);
+            updatingProduct.Name = Name;
+            updatingProduct.Price = Price;
             SourseDbFactory.GetSourseDB().UpdateProduct(updatingProduct);
         }
 
@@ -109,7 +109,7 @@ namespace RitchieBlackmore.Controllers
         }
 
         //[HttpPost]
-        public ActionResult ProductStatistics(int id)
+        public ActionResult ProductStatistics(Int32 id)
         {
             ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(id);
             return PartialView(product); 
@@ -131,21 +131,23 @@ namespace RitchieBlackmore.Controllers
                 Value = "2",
                 Text = "Расход",
             });
-            newOperation.list = new SelectList(list, "Value", "Text");
+            newOperation.ListTypeOperation = new SelectList(list, "Value", "Text");
+            newOperation.SelectedTypeOperation = "1";
             return PartialView("CreateOperation", newOperation);
         }
 
         [HttpPost]
-        public ActionResult CreateProductOperation(OperationModel operation)
+        public void CreateProductOperation(OperationModel operation)
         {
             OperationMananenger operationManager = new OperationMananenger();
-              // operationManager.PerformOperation(operation);
-            return PartialView("ProductStatistics");
+            operationManager.PerformOperation(operation);
+            //return PartialView("ProductStatistics");
         }
 
-        //public ActionResult DeleteRow(Int32 id)
-        //{
-        //    return true;
-        //}
+        public Boolean DeleteRow(Int32 id)
+        {
+            SourseDbFactory.GetSourseDB().DeleteProduct(id);
+            return true;
+        }
     }
 }

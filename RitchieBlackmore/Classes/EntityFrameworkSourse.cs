@@ -95,6 +95,7 @@ namespace RitchieBlackmore.Classes
                 {
                     updatingProduct.Name = product.Name;
                     updatingProduct.Price = product.Price;
+                    updatingProduct.Quantity = product.Quantity;
                     db.SaveChanges();
                 }
             }

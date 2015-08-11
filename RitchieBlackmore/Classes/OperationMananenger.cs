@@ -13,7 +13,7 @@ namespace RitchieBlackmore.Classes
 
         public OperationMananenger()
         {
-            _DbOperationType = new Dictionary<string, int>();
+            _DbOperationType = new Dictionary<String, Int32>();
             _DbOperationType.Add("arrival", 1);
             _DbOperationType.Add("expense", 2);
         }
@@ -44,7 +44,7 @@ namespace RitchieBlackmore.Classes
         {
             MembershipUser mu = Membership.GetUser();
             Guid userId = (Guid)mu.ProviderUserKey;
-            operation.IdOperation = Convert.ToInt32(operation.choice);
+            operation.IdOperation = Convert.ToInt32(operation.SelectedTypeOperation);
             this.UpdateProductAfterOperation(operation);
             SourseDbFactory.GetSourseDB().AddNewOperation(operation, userId, DateTime.Now);
         }

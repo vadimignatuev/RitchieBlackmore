@@ -17,9 +17,9 @@ namespace RitchieBlackmore.Models
 
         public String ProductName { get; set; }
 
-        public SelectList list { get; set; }
+        public SelectList ListTypeOperation { get; set; }
 
-        public String choice { get; set; }
+        public String SelectedTypeOperation { get; set; }
 
     }
 }

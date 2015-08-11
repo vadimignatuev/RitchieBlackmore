@@ -41,11 +41,14 @@
 </div>
 
 <div id ="formsStatisticsProduct" style =" display:none">
+    <div id ="idProduct" style =" display:none"></div>
     @Html.Partial("StatisticsProduct")
 </div>
 
-<div id ="deleteDialogForm" style =" display:none">
-     <div id="dialog-confirm"></div>
+<div id ="deleteDialogForm" style =" display:none"  data-deleteProduct-url="@Url.Action("DeleteRow", "Products")">
+     <div id="dialog-confirm">
+         Do you wont to delete this product
+     </div>
 </div>
 
 <div id ="productStatistic" style =" display:none" data-productStatistic-url="@Url.Action("ProductStatistics", "Products")">

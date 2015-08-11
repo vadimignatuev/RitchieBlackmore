@@ -40,8 +40,8 @@
             $("#productStatistic").css('display', 'block');
             console.log($("#productStatistic").css('display'));
             var Id = grid.getRowData(rowid).Id;
-            clickProductStatisticLink(Id, e);
-            //getProductStatistic(Id);
+            //clickProductStatisticLink(Id, e);
+            getProductStatistic(Id);
         },
         gridComplete: function(){}
         
@@ -52,32 +52,44 @@
 function getHtmlNavigationCell(id) {
     return "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + id + ")\">" + "Движение товара</button>" +
                "<button class=\"ver3_statusbutton\" onclick=\"editRow(" + id + ")\">" + "Редактировать" + "</button>" +
-               "<button class=\"ver3_statusbutton\" onclick=\"fnOpenNormalDialog(" + id + ")\">" + "Удалить" + "</button>" +
+               "<button class=\"ver3_statusbutton\" onclick=\"deleteRow(" + id + ")\">" + "Удалить" + "</button>" +
                 "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + id + ")\">" + "Окно статистики</button>"
            
-} 
+}
+
+function updateProductStatistic()
+{
+    selRowId = $("#jqg").getGridParam("selrow");
+    console.log("update "+selRowId);
+
+}
     
 function motionProduct(id) {
-   
+
     var rowData = grid.getRowData(id);
     var strTitle = "Приход/расход " + rowData._Name;
-    
-    var href = $("#sectProductGrid").data('createoperationUrl') + "?id=" + id;
+    var productId = grid.getRowData(id).Id;
+    var href = $("#sectProductGrid").data('createoperationUrl') + "?id=" + productId;
     console.log(href);
 
-    $("<div></div>")
+    var dialog = $("<div></div>")
                 .addClass("dialog")
                 .appendTo("body")
                 .dialog({
                     title: strTitle,
                     close: function () { $(this).remove() },
-                    //modal: true
-                })
+                    modal: true
+                 })                
                 .load(href);
-      //$('#formsMotionsProduct').dialog({
-      //  width: 'auto',
-      //  height: 'auto'
-    //});
+    
+    dialog.attr('id', 'motionDialog');
+}
+
+function successNewOperatin()
+{
+    $("#motionDialog").dialog('close');
+    grid.trigger("reloadGrid", [{ current: true }]);
+    updateProductStatistic();
 }
 
 function editRow(id) {
@@ -96,6 +108,7 @@ function changeViewSelRow(id) {
 
 function saveChange(id)
 {
+    console.log("saveChange");
     var Id = grid.getRowData(id).Id;
     console.log(Id);
     grid.saveRow(id,
@@ -120,21 +133,59 @@ function saveChange(id)
 function backEdit(id)
 {
     grid.restoreRow(id);
-    $("#cellNavigationRowNumber" + id).html(getHtmlNavigationCell);
+    $("#cellNavigationRowNumber" + id).html(getHtmlNavigationCell(id));
 
 }
 
-function statisticsProduct(id) {
-    initStatistikGrid(id);
-    $('#formsStatisticsProduct').dialog({
-        width: 'auto',
-        height: 'auto'
+function deleteRow(id) {
+    //$("#dialog-confirm").html("Confirm Dialog Box");
+    //console.log("I in fnOpenNormalDialog");
+    // Define the Dialog and its properties.
+    $("#dialog-confirm").dialog({
+        resizable: false,
+        modal: true,
+        title: "Modal",
+        height: 250,
+        width: 400,
+        buttons: {
+             "Yes": function () {
+                $(this).dialog('close');
+                var url = $("#deleteDialogForm").data('deleteproductUrl');
+                console.log(url);
+                var productId = grid.getRowData(id).Id;
+                console.log("No async");
+                $.when($.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: { 'id': productId },
+                    async: false
+                    //saccess: successDelete(id)
+                })).then(successDelete(id));
+                //grid.trigger("reloadGrid", [{ current: true }]);
+                
+                //callback(true);
+            },
+            "No": function () {
+                $(this).dialog('close');
+                //callback(false);
+            }
+        }
     });
+    
 }
 
-function deleteColumn(id) {
-    $('#deleteDialogForm').dialog();
-    grid.delRowData(id);
+function successDelete(id) {
+    console.log("successDelete in then");
+    //grid.delRowData(id); 
+    grid.trigger("reloadGrid", [{ current: true }]);
+}
+
+function callback(value) {
+    if (value) {
+        alert("Confirmed");
+    } else {
+        alert("Rejected");
+    }
 }
  
 
@@ -190,16 +241,41 @@ function saccessCreateNewProduct() {
     grid.trigger("reloadGrid", [{ current: true }]);
 }
 
+function statisticsProduct(id) {
 
+    var productId = grid.getRowData(id).Id;
+    var gridStatistic = $("<div></div>").html(createDialogStatisticOperationProduct(productId))
+    console.log(gridStatistic);
+    initStatistikGrid(productId);
 
+    gridStatistic.dialog({
+        
+        width: 'auto',
+        height: 'auto',
+        close: function () {
+            $('#formsStatisticsProduct').empty();
 
-function initStatistikGrid(rowId) {
+        }
+    });
+    
+}
 
-    $("#gridStatistics").jqGrid({
+function createDialogStatisticOperationProduct(productId) {
+    return "<div id=\"gridProductId" + productId + "\">" + productId + "</div> " +
+            "<table id=\"gridStatistics"+productId+"\"></table>" +
+            "<div id=\"gridStatisticsPager" + productId + "\"></div> "
+}
+
+function initStatistikGrid(productId) {
+    var gridId = "#gridStatistics" + productId;
+    var gridPagerId = "#gridStatisticsPager" + productId;
+
+    console.log(gridId);
+    $(gridId).jqGrid({
         url: 'Products/GetStatisticProduct',
         datatype: "json",
         mtype: 'POST',
-        postData: { 'keyword': function () { return "10"; } },
+        postData: { 'productId': function () { return productId; } },
         jsonReader: {
             page: "page",
             total: "total",
@@ -215,12 +291,12 @@ function initStatistikGrid(rowId) {
             { name: 'Quantity', index: 'Quantity', width: 50, sortable: true },
             { name: 'DateOperation', index: 'DateOperation', width: 100, sortable: true },
         ],
-        userData: rowId,
+        userData: productId,
         rownumbers: true,
         viewrecords: true,
         width: 1100,
         height: "100%",
-        pager: '#gridStatisticsPager',
+        pager: gridPagerId,
         rowNum: 10,
         rowList: [10, 25, 50, 100],
         //rowNum: 20, // число отображаемых строк
@@ -233,41 +309,9 @@ function initStatistikGrid(rowId) {
         }
         
     });
+        
 }
 
-function fnOpenNormalDialog(id) {
-    $("#dialog-confirm").html("Confirm Dialog Box");
-
-    console.log("I in fnOpenNormalDialog");
-    // Define the Dialog and its properties.
-    $("#dialog-confirm").dialog({
-        resizable: false,
-        modal: true,
-        title: "Modal",
-        height: 250,
-        width: 400,
-        buttons: {
-            "Yes": function () {
-                $(this).dialog('close');
-                callback(true);
-            },
-            "No": function () {
-                $(this).dialog('close');
-                callback(false);
-            }
-        }
-    });
-}
-
-$('#btnOpenDialog').click(fnOpenNormalDialog);
-
-function callback(value) {
-    if (value) {
-        alert("Confirmed");
-    } else {
-        alert("Rejected");
-    }
-}
 
 
 
