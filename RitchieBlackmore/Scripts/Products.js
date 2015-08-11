@@ -244,16 +244,17 @@ function saccessCreateNewProduct() {
 function statisticsProduct(id) {
 
     var productId = grid.getRowData(id).Id;
-    var gridStatistic = $("<div></div>").html(createDialogStatisticOperationProduct(productId))
-    console.log(gridStatistic);
+    //var gridStatistic = $("<div></div>").html(createDialogStatisticOperationProduct(productId))
+    //console.log(gridStatistic);
+    $("#gridStatistics").empty();
+    $("#gridProductId").html(productId);
     initStatistikGrid(productId);
-
-    gridStatistic.dialog({
-        
+    $("#formsStatisticsProduct").dialog({
+        modal:true, 
         width: 'auto',
         height: 'auto',
         close: function () {
-            $('#formsStatisticsProduct').empty();
+            //$('#formsStatisticsProduct').empty();
 
         }
     });
@@ -261,21 +262,21 @@ function statisticsProduct(id) {
 }
 
 function createDialogStatisticOperationProduct(productId) {
-    return "<div id=\"gridProductId" + productId + "\">" + productId + "</div> " +
+    return "<div id=\"tableProductId" + productId + "\">"+
+            "<div id=\"gridProductId" + productId + "\">" + productId + "</div> " +
             "<table id=\"gridStatistics"+productId+"\"></table>" +
-            "<div id=\"gridStatisticsPager" + productId + "\"></div> "
+            "<div id=\"gridStatisticsPager" + productId + "\"></div> " +
+        "</div> "
 }
 
 function initStatistikGrid(productId) {
-    var gridId = "#gridStatistics" + productId;
-    var gridPagerId = "#gridStatisticsPager" + productId;
-
-    console.log(gridId);
-    $(gridId).jqGrid({
+    var pId = $("#gridProductId").text();
+    console.log(pId);
+    $("#gridStatistics").jqGrid({
         url: 'Products/GetStatisticProduct',
         datatype: "json",
         mtype: 'POST',
-        postData: { 'productId': function () { return productId; } },
+        postData: { 'productId': function () { return $("#gridProductId").text(); } },
         jsonReader: {
             page: "page",
             total: "total",
@@ -296,7 +297,7 @@ function initStatistikGrid(productId) {
         viewrecords: true,
         width: 1100,
         height: "100%",
-        pager: gridPagerId,
+        pager: "#gridStatisticsPager",
         rowNum: 10,
         rowList: [10, 25, 50, 100],
         //rowNum: 20, // число отображаемых строк
