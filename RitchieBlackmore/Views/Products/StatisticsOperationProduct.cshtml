@@ -1,0 +1,11 @@
+﻿
+<script src="@Url.Content("~/Scripts/InitStatisticJqGrid.js")" type="text/javascript"></script>
+
+<div id = "formsStatisticsProduct-@ViewBag.ProductId">
+    <table id="gridStatistics-@ViewBag.ProductId"></table>
+    <div id="gridStatisticsPager-@ViewBag.ProductId"></div> 
+</div>
+
+<script>
+    initStatisticOperationGrid(@ViewBag.ProductId);
+</script>

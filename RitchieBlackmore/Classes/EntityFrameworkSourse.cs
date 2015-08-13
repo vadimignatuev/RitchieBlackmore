@@ -12,6 +12,11 @@ namespace RitchieBlackmore.Classes
 {
     public class EntityFrameworkSourse : RitchieBlackmore.Interfaces.ISourseDb
     {
+        public IgnatuevTestTaskEntities GetDbConnection() 
+        {
+            return new IgnatuevTestTaskEntities();
+        }
+
         public EntityFrameworkSourse()
         {
             Mapper.CreateMap<Product, ProductModel>()
@@ -29,17 +34,17 @@ namespace RitchieBlackmore.Classes
 
         public ProductModel GetProductById(Int32 id)
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 return Mapper.Map<ProductModel>(db.Product.FirstOrDefault(it => it.Id == id));
             }
         }
 
-        public List<ProductModel> GetRangeSortedProducts(Int32 startPosition, Int32 count, String field, Boolean SortOrder)
+        public List<ProductModel> GetRangeSortedProducts(Int32 startPosition, Int32 count, String field, String SortOrder)
         {
             List<Models.ProductModel> listProducts;
 
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 var s = db.GetRangeSortedProducts(startPosition, count, field, SortOrder);
                 listProducts = s.Select(it => Mapper.DynamicMap<Models.ProductModel>(it)).ToList();
@@ -47,15 +52,15 @@ namespace RitchieBlackmore.Classes
             return listProducts;
         }
 
-        public List<OperationDataModel> GetStatisticsProduct(Int32 productId, Int32 startPosition, Int32 count, String field, Boolean SortOrder)
+        public List<OperationDataModel> GetStatisticsProduct(Int32 productId, Int32 startPosition, Int32 count, String field, String SortOrder)
         {
             Mapper.CreateMap<GetStatisticsProduct_Result, OperationDataModel>()
                 .ForMember(op => op.OperatorName, conf => conf.MapFrom(ol => ol.UserName));
             
             List<OperationDataModel> listStatistics;
-            
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
-            {
+
+            using (var db = GetDbConnection())
+            {   
                 listStatistics = Mapper.Map<ObjectResult<GetStatisticsProduct_Result>, List<OperationDataModel>>(db.GetStatisticsProduct(productId, startPosition, count, field, SortOrder));
             }
 
@@ -64,7 +69,7 @@ namespace RitchieBlackmore.Classes
 
         public void AddNewOperation(OperationModel operation, Guid userId, DateTime dateOperation)
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 StatisticsOperation newOperation = new StatisticsOperation();
                 newOperation.OperationTypeId = operation.IdOperation;
@@ -79,7 +84,7 @@ namespace RitchieBlackmore.Classes
 
         public void AddNewProduct(Models.ProductModel product)
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 db.Product.Add(Mapper.Map<ProductModel, Product>(product));
                 db.SaveChanges();
@@ -88,7 +93,7 @@ namespace RitchieBlackmore.Classes
 
         public void UpdateProduct(ProductModel product)
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 Product updatingProduct = db.Product.FirstOrDefault(it => it.Id == product.Id);
                 if (updatingProduct != null)
@@ -103,7 +108,7 @@ namespace RitchieBlackmore.Classes
 
         public void DeleteProduct(Int32 id)
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 db.DeleteProduct(id);
             }
@@ -111,7 +116,7 @@ namespace RitchieBlackmore.Classes
 
         public Int32 GetCountProduct() 
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 return db.Product.Count();
             }
@@ -119,7 +124,7 @@ namespace RitchieBlackmore.Classes
 
         public Int32 GetCountOperationWithProduct(Int32 id)
         {
-            using (RitchieBlackmoreEntities db = new RitchieBlackmoreEntities())
+            using (var db = GetDbConnection())
             {
                 return db.StatisticsOperation.Count();
             }

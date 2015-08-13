@@ -10,6 +10,7 @@ using RitchieBlackmore.Classes;
 
 namespace RitchieBlackmore.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         //
@@ -30,22 +31,22 @@ namespace RitchieBlackmore.Controllers
 
                 if (page == null) 
                 {
-                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts(0 , 10, "Id", true);
+                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts(0, 10, "Id", sord);
                 }
                 else
                 {
-                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page.Value - 1) * rows.Value, rows.Value, "Id", true);
+                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page.Value - 1) * rows.Value, rows.Value, "Id", sord);
                 }
             }
             else 
             {
                 if (page == null)
                 {
-                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts(0, 10, "Id", false);
+                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts(0, 10, "Id", sord);
                 }
                 else
                 {
-                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page.Value - 1) * rows.Value, rows.Value, "Id", false);
+                    productsList = SourseDbFactory.GetSourseDB().GetRangeSortedProducts((page.Value - 1) * rows.Value, rows.Value, "Id", sord);
                 }
             }
 
@@ -75,11 +76,11 @@ namespace RitchieBlackmore.Controllers
 
             if (sord == "asc")
             {
-                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", true);
+                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", sord);
             }
             else
             {
-                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", true);
+                statisticsList = SourseDbFactory.GetSourseDB().GetStatisticsProduct(7, 1, 10, "UserName", sord);
             }            
 
             int countRows = SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(7);
@@ -109,7 +110,7 @@ namespace RitchieBlackmore.Controllers
         }
 
         //[HttpPost]
-        public ActionResult ProductStatistics(Int32 id)
+        public ActionResult ProductDetails(Int32 id)
         {
             ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(id);
             return PartialView(product); 
@@ -141,13 +142,19 @@ namespace RitchieBlackmore.Controllers
         {
             OperationMananenger operationManager = new OperationMananenger();
             operationManager.PerformOperation(operation);
-            //return PartialView("ProductStatistics");
+            //return PartialView("ProductDetails");
         }
 
         public Boolean DeleteRow(Int32 id)
         {
             SourseDbFactory.GetSourseDB().DeleteProduct(id);
             return true;
+        }
+
+        public ActionResult StatisticsOperationProduct(int productId)
+        {
+            ViewBag.ProductId = productId;
+            return PartialView();
         }
     }
 }

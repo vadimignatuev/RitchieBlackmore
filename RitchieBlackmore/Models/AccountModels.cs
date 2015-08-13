@@ -16,7 +16,7 @@ namespace RitchieBlackmore.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(255, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
@@ -30,11 +30,13 @@ namespace RitchieBlackmore.Models
     public class LogOnModel
     {
         [Required]
+        [StringLength(255, ErrorMessage = "User name length effluents should be less than 255 characters")]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
+        [StringLength(255, ErrorMessage = "Password length effluents should be less than 255 characters")]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
@@ -45,6 +47,7 @@ namespace RitchieBlackmore.Models
     public class RegisterModel
     {
         [Required]
+        [StringLength(255, ErrorMessage = "User name length effluents should be less than 255 characters")]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
@@ -54,7 +57,7 @@ namespace RitchieBlackmore.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(255, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }

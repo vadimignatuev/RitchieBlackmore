@@ -120,34 +120,34 @@
   <ItemGroup>
     <Compile Include="Classes\EntityFrameworkSourse.cs" />
     <Compile Include="Classes\EntityFramworcDbContex\GetStatisticsProduct_Result.cs">
-      <DependentUpon>RitchieBlackmore.tt</DependentUpon>
+      <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IgnatuevTestTask.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IgnatuevTestTask.edmx</DependentUpon>
     </Compile>
     <Compile Include="Classes\EntityFramworcDbContex\OperationType.cs">
-      <DependentUpon>RitchieBlackmore.tt</DependentUpon>
+      <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\EntityFramworcDbContex\Product.cs">
-      <DependentUpon>RitchieBlackmore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\EntityFramworcDbContex\RitchieBlackmore.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RitchieBlackmore.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\EntityFramworcDbContex\RitchieBlackmore.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RitchieBlackmore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\EntityFramworcDbContex\RitchieBlackmore.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RitchieBlackmore.edmx</DependentUpon>
+      <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\EntityFramworcDbContex\StatisticsOperation.cs">
-      <DependentUpon>RitchieBlackmore.tt</DependentUpon>
+      <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\EntityFramworcDbContex\Users.cs">
-      <DependentUpon>RitchieBlackmore.tt</DependentUpon>
+      <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\OperationMananenger.cs" />
     <Compile Include="Classes\SourseDbFactory.cs" />
@@ -165,15 +165,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Classes\EntityFramworcDbContex\RitchieBlackmore.Context.tt">
+    <Content Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RitchieBlackmore.edmx</DependentUpon>
-      <LastGenOutput>RitchieBlackmore.Context.cs</LastGenOutput>
+      <DependentUpon>IgnatuevTestTask.edmx</DependentUpon>
+      <LastGenOutput>IgnatuevTestTask.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Classes\EntityFramworcDbContex\RitchieBlackmore.tt">
+    <Content Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>RitchieBlackmore.edmx</DependentUpon>
-      <LastGenOutput>RitchieBlackmore.cs</LastGenOutput>
+      <DependentUpon>IgnatuevTestTask.edmx</DependentUpon>
+      <LastGenOutput>IgnatuevTestTask.cs</LastGenOutput>
     </Content>
     <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
     <Content Include="Content\Products.css" />
@@ -210,6 +210,23 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_0050ef_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_1ba1e2_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_999999_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_ce352c_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_40_999999_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_55_60a917_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_highlight-soft_100_ffffff_1x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-icons_333333_256x240.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-icons_ce352c_256x240.png" />
+    <Content Include="Content\themes\MyTheme\jquery-ui.css" />
+    <Content Include="Content\themes\MyTheme\jquery-ui.min.css" />
+    <Content Include="Content\themes\MyTheme\jquery-ui.structure.css" />
+    <Content Include="Content\themes\MyTheme\jquery-ui.structure.min.css" />
+    <Content Include="Content\themes\MyTheme\jquery-ui.theme.css" />
+    <Content Include="Content\themes\MyTheme\jquery-ui.theme.min.css" />
     <Content Include="Content\ui.jqgrid.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\metro.svg" />
@@ -262,21 +279,22 @@
     <Content Include="Scripts\i18n\grid.locale-ua.js" />
     <Content Include="Scripts\i18n\grid.locale-vi.js" />
     <Content Include="Scripts\jqGrid\grid.locale-en.js" />
+    <Content Include="Scripts\InitStatisticJqGrid.js" />
     <Content Include="Scripts\jqGrid\jquery.jqAutoComplete.min.js" />
     <Content Include="Scripts\jqGrid\jquery.jqDatePicker.min.js" />
     <Content Include="Scripts\jqGrid\jquery.jqGrid.js" />
     <Content Include="Scripts\jqGrid\jquery.jqGrid.min.js" />
-    <EntityDeploy Include="Classes\EntityFramworcDbContex\RitchieBlackmore.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RitchieBlackmore.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Classes\EntityFramworcDbContex\RitchieBlackmore.edmx.diagram">
-      <DependentUpon>RitchieBlackmore.edmx</DependentUpon>
-    </Content>
     <Content Include="fonts\selection.json" />
     <Content Include="fonts\metro.woff" />
     <Content Include="fonts\metro.ttf" />
     <Content Include="fonts\metro.eot" />
+    <EntityDeploy Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>IgnatuevTestTask.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Classes\EntityFramworcDbContex\IgnatuevTestTask.edmx.diagram">
+      <DependentUpon>IgnatuevTestTask.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -322,10 +340,10 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Products\MotionProduct.cshtml" />
-    <Content Include="Views\Products\StatisticsProduct.cshtml" />
+    <Content Include="Views\Products\StatisticsOperationProduct.cshtml" />
     <Content Include="Views\Products\CreateOperation.cshtml" />
     <Content Include="Views\Products\CreateNewProduct.cshtml" />
-    <Content Include="Views\Products\ProductStatistics.cshtml" />
+    <Content Include="Views\Products\ProductDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

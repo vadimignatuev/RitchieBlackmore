@@ -13,12 +13,13 @@ namespace RitchieBlackmore.Classes.EntityFramworcDbContex
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Core.Objects;
+    using System.Data.Objects.DataClasses;
     using System.Linq;
     
-    public partial class RitchieBlackmoreEntities : DbContext
+    public partial class IgnatuevTestTaskEntities : DbContext
     {
-        public RitchieBlackmoreEntities()
-            : base("name=RitchieBlackmoreEntities")
+        public IgnatuevTestTaskEntities()
+            : base("name=IgnatuevTestTaskEntities")
         {
         }
     
@@ -41,12 +42,21 @@ namespace RitchieBlackmore.Classes.EntityFramworcDbContex
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("DeleteProduct", productIdParameter);
         }
     
+        public virtual ObjectResult<Nullable<int>> GetCountProductOperations(Nullable<int> productId)
+        {
+            var productIdParameter = productId.HasValue ?
+                new ObjectParameter("ProductId", productId) :
+                new ObjectParameter("ProductId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("GetCountProductOperations", productIdParameter);
+        }
+    
         public virtual ObjectResult<Nullable<int>> GetCountProducts()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("GetCountProducts");
         }
     
-        public virtual ObjectResult<Product> GetRangeSortedProducts(Nullable<int> startPosition, Nullable<int> quantity, string columnName, Nullable<bool> sortOrder)
+        public virtual ObjectResult<Product> GetRangeSortedProducts(Nullable<int> startPosition, Nullable<int> quantity, string columnName, string sortOrder)
         {
             var startPositionParameter = startPosition.HasValue ?
                 new ObjectParameter("StartPosition", startPosition) :
@@ -60,14 +70,14 @@ namespace RitchieBlackmore.Classes.EntityFramworcDbContex
                 new ObjectParameter("ColumnName", columnName) :
                 new ObjectParameter("ColumnName", typeof(string));
     
-            var sortOrderParameter = sortOrder.HasValue ?
+            var sortOrderParameter = sortOrder != null ?
                 new ObjectParameter("SortOrder", sortOrder) :
-                new ObjectParameter("SortOrder", typeof(bool));
+                new ObjectParameter("SortOrder", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Product>("GetRangeSortedProducts", startPositionParameter, quantityParameter, columnNameParameter, sortOrderParameter);
         }
     
-        public virtual ObjectResult<Product> GetRangeSortedProducts(Nullable<int> startPosition, Nullable<int> quantity, string columnName, Nullable<bool> sortOrder, MergeOption mergeOption)
+        public virtual ObjectResult<Product> GetRangeSortedProducts(Nullable<int> startPosition, Nullable<int> quantity, string columnName, string sortOrder, MergeOption mergeOption)
         {
             var startPositionParameter = startPosition.HasValue ?
                 new ObjectParameter("StartPosition", startPosition) :
@@ -81,14 +91,14 @@ namespace RitchieBlackmore.Classes.EntityFramworcDbContex
                 new ObjectParameter("ColumnName", columnName) :
                 new ObjectParameter("ColumnName", typeof(string));
     
-            var sortOrderParameter = sortOrder.HasValue ?
+            var sortOrderParameter = sortOrder != null ?
                 new ObjectParameter("SortOrder", sortOrder) :
-                new ObjectParameter("SortOrder", typeof(bool));
+                new ObjectParameter("SortOrder", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Product>("GetRangeSortedProducts", mergeOption, startPositionParameter, quantityParameter, columnNameParameter, sortOrderParameter);
         }
     
-        public virtual ObjectResult<GetStatisticsProduct_Result> GetStatisticsProduct(Nullable<int> prodactId, Nullable<int> startPosition, Nullable<int> quantity, string columnName, Nullable<bool> sortOrder)
+        public virtual ObjectResult<GetStatisticsProduct_Result> GetStatisticsProduct(Nullable<int> prodactId, Nullable<int> startPosition, Nullable<int> quantity, string columnName, string sortOrder)
         {
             var prodactIdParameter = prodactId.HasValue ?
                 new ObjectParameter("ProdactId", prodactId) :
@@ -106,9 +116,9 @@ namespace RitchieBlackmore.Classes.EntityFramworcDbContex
                 new ObjectParameter("ColumnName", columnName) :
                 new ObjectParameter("ColumnName", typeof(string));
     
-            var sortOrderParameter = sortOrder.HasValue ?
+            var sortOrderParameter = sortOrder != null ?
                 new ObjectParameter("SortOrder", sortOrder) :
-                new ObjectParameter("SortOrder", typeof(bool));
+                new ObjectParameter("SortOrder", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetStatisticsProduct_Result>("GetStatisticsProduct", prodactIdParameter, startPositionParameter, quantityParameter, columnNameParameter, sortOrderParameter);
         }

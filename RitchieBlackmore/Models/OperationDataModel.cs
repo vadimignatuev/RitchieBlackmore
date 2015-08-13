@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -13,6 +14,7 @@ namespace RitchieBlackmore.Models
 
         public Int32 Quantity { get; set; }
 
+        [DataType(DataType.DateTime)]
         public DateTime DateOperation { get; set; }
     }
 }

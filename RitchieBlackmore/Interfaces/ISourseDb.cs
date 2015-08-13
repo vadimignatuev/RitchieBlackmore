@@ -10,9 +10,9 @@ namespace RitchieBlackmore.Interfaces
     {
         ProductModel GetProductById(Int32 id);
 
-        List<ProductModel> GetRangeSortedProducts(Int32 startPosition, Int32 count, String field, Boolean SortOrder);
+        List<ProductModel> GetRangeSortedProducts(Int32 startPosition, Int32 count, String field, String SortOrder);
 
-        List<OperationDataModel> GetStatisticsProduct(Int32 ProductId, Int32 startPosition, Int32 count, String field, Boolean SortOrder);
+        List<OperationDataModel> GetStatisticsProduct(Int32 ProductId, Int32 startPosition, Int32 count, String field, String SortOrder);
 
         void AddNewOperation(OperationModel operation, Guid userId, DateTime dateOperation);
 
