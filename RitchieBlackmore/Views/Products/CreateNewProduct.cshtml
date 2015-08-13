@@ -6,7 +6,7 @@
 @using (Ajax.BeginForm("CreateNewProduct", "Products", new AjaxOptions { UpdateTargetId = "newProduct", OnSuccess = "saccessCreateNewProduct" }, new { @id = "createNewProduct" }))
 {
     @Html.ValidationSummary(true)
-    <fieldset>
+    
         <legend>ProductModel</legend>
 
         <div class="editor-label">
@@ -28,5 +28,5 @@
          <p>
             <input type="submit" value="Create" />
         </p>
-    </fieldset>
+    
 }

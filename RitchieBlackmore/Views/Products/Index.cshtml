@@ -12,27 +12,55 @@
 <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Products.js")" type="text/javascript"></script>
 
+<script type ="text/javascript">
+    function showCharm(id) {
+        var charm = $(id).data("charm");
+        if (charm.element.data("opened") === true) {
+            charm.close();
+        } else {
+            charm.open();
+        }
+    }
+</script>
 
+<div class="flex-grid no-responsive-future" style="height: 100%;">
+    <div class="row" style="height: 100%">
+            <div class="bg-darkBlue" data-role="charm" data-position="left" id ="createNewProductcharm">
+                <div class ="newProduct">
+                   @Html.Partial("CreateNewProduct") 
+                </div>
+            </div>
+        <div class="cell size-x200" id="cell-sidebar" >
 
-<div>
-    <div >
-        <div class ="newProduct">
-            @Html.Partial("CreateNewProduct") 
         </div>
-        <div class ="productGrid" id ="sectProductGrid" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
-            <div id ="statisticOperationLink" data-statisticOperationProduct-url="@Url.Action("StatisticsOperationProduct", "Products")"></div>
-            <table id="jqg"></table>
-            <div id="jqgPager"></div> 
+        <div class="cell auto-size padding20 bg-white" id="cell-content-table-product" >
+            <h1 class="text-light">Virtual machines <span class="mif-drive-eta place-right"></span></h1>
+            <hr class="thin bg-grayLighter">
+            <button class="button primary" onclick="showCharm('#createNewProductcharm')"><span class="mif-plus"></span> Create...</button>
+            <button class="button success" onclick="pushMessage('success')"><span class="mif-play"></span> Start</button>
+            <button class="button warning" onclick="pushMessage('warning')"><span class="mif-loop2"></span> Restart</button>
+            <button class="button alert" onclick="pushMessage('alert')">Stop all machines</button>
+            <hr class="thin bg-grayLighter">
+            <div class ="productGrid" id ="sectProductGrid" style ="height:100%" data-createoperation-url="@Url.Action("CreateProductOperation", "Products")">
+                <div id ="statisticOperationLink" data-statisticOperationProduct-url="@Url.Action("StatisticsOperationProduct", "Products")"></div>
+                <table id="jqg"></table>
+                <div id="jqgPager"></div> 
+            </div>
         </div>
-        <div class ="statistic">
-            
-        </div>  
+        <div class="cell auto-size padding20 bg-white" id="cell-content-table-product">
+        </div>
+        
+        <div class="cell size-x400 padding20 bg-white" id="cell-content">
+            <div id ="productDetails" style =" display:none" data-productDetails-url="@Url.Action("ProductDetails", "Products")">
+               @Html.Partial("ProductDetails")
+            </div>
+        </div>
     </div>
 </div>
 
 <div id ="formsStatisticsProduct" style =" display:none">
-     @Html.Partial("StatisticsOperationProduct")
-</div>
+                 @Html.Partial("StatisticsOperationProduct")
+            </div>
 
 <div id ="deleteDialogForm" style =" display:none"  data-deleteProduct-url="@Url.Action("DeleteRow", "Products")">
      <div id="dialog-confirm">
@@ -40,116 +68,6 @@
      </div>
 </div>
 
-<div id ="productDetails" style =" display:none" data-productDetails-url="@Url.Action("ProductDetails", "Products")">
-   @Html.Partial("ProductDetails")
-</div>
-
 @Ajax.ActionLink("Statistic", "ProductDetails", new { productStatistic = "" },
                                     new AjaxOptions { UpdateTargetId = "productDetails" },
                                     new { @id = "productDetailsLink", @style = "visibility:hidden;" })
-
-@*<div class="page-content">
-        <div class="flex-grid no-responsive-future" style="height: 100%;">
-            <div class="row" style="height: 100%">
-                <div class="cell size-x200" id="cell-sidebar" style="background-color: #71b1d1; height: 100%">
-                    <ul class="sidebar">
-                        <li><a href="#">
-                            <span class="mif-apps icon"></span>
-                            <span class="title">all items</span>
-                            <span class="counter">0</span>
-                        </a></li>
-                        <li><a href="#">
-                            <span class="mif-vpn-publ icon"></span>
-                            <span class="title">websites</span>
-                            <span class="counter">0</span>
-                        </a></li>
-                        <li class="active"><a href="#">
-                            <span class="mif-drive-eta icon"></span>
-                            <span class="title">Virtual machines</span>
-                            <span class="counter">2</span>
-                        </a></li>
-                        <li><a href="#">
-                            <span class="mif-cloud icon"></span>
-                            <span class="title">Cloud services</span>
-                            <span class="counter">0</span>
-                        </a></li>
-                        <li><a href="#">
-                            <span class="mif-database icon"></span>
-                            <span class="title">SQL Databases</span>
-                            <span class="counter">0</span>
-                        </a></li>
-                        <li><a href="#">
-                            <span class="mif-cogs icon"></span>
-                            <span class="title">Automation</span>
-                            <span class="counter">0</span>
-                        </a></li>
-                        <li><a href="#">
-                            <span class="mif-apps icon"></span>
-                            <span class="title">all items</span>
-                            <span class="counter">0</span>
-                        </a></li>
-                    </ul>
-                </div>
-                <div class="cell auto-size padding20 bg-white" id="cell-content">
-                    <h1 class="text-light">Virtual machines <span class="mif-drive-eta place-right"></span></h1>
-                    <hr class="thin bg-grayLighter">
-                    <button class="button primary" onclick="pushMessage('info')"><span class="mif-plus"></span> Create...</button>
-                    <button class="button success" onclick="pushMessage('success')"><span class="mif-play"></span> Start</button>
-                    <button class="button warning" onclick="pushMessage('warning')"><span class="mif-loop2"></span> Restart</button>
-                    <button class="button alert" onclick="pushMessage('alert')">Stop all machines</button>
-                    <hr class="thin bg-grayLighter">
-                    <table class="dataTable border bordered" data-role="datatable" data-auto-width="false">
-                        <thead>
-                        <tr>
-                            <td style="width: 20px">
-                            </td>
-                            <td class="sortable-column sort-asc" style="width: 100px">ID</td>
-                            <td class="sortable-column">Machine name</td>
-                            <td class="sortable-column">Address</td>
-                            <td class="sortable-column" style="width: 20px">Status</td>
-                            <td style="width: 20px">Switch</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                <label class="input-control checkbox small-check no-margin">
-                                    <input type="checkbox">
-                                    <span class="check"></span>
-                                </label>
-                            </td>
-                            <td>123890723212</td>
-                            <td>Machine number 1</td>
-                            <td><a href="http://virtuals.com/machines/123890723212">link</a></td>
-                            <td class="align-center"><span class="mif-checkmark fg-green"></span></td>
-                            <td>
-                                <label class="switch-original">
-                                    <input type="checkbox" checked>
-                                    <span class="check"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label class="input-control checkbox small-check no-margin">
-                                    <input type="checkbox">
-                                    <span class="check"></span>
-                                </label>
-                            </td>
-                            <td>123890723212</td>
-                            <td>Machine number 2</td>
-                            <td><a href="http://virtuals.com/machines/123890723212">link</a></td>
-                            <td class="align-center"><span class="mif-stop fg-red"></span></td>
-                            <td>
-                                <label class="switch-original">
-                                    <input type="checkbox">
-                                    <span class="check"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>*@

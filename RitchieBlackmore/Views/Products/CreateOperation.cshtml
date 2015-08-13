@@ -6,27 +6,27 @@
 
 @using (Ajax.BeginForm("CreateProductOperation", "Products", new AjaxOptions { OnSuccess = "successNewOperatin" }, new { @id = "createNewOperationProduct" })) 
 {   
-    // @Html.ValidationSummary(true)
-    <fieldset>
-        <legend></legend>
+     @Html.ValidationSummary(true)
+    
+    <legend></legend>
 
-        <div style ="display: none">
-            @Html.LabelFor(model => model.IdProduct)
-            @Html.EditorFor(model => model.IdProduct)
-         </div>       
+    <div style ="display: none">
+        @Html.LabelFor(model => model.IdProduct)
+        @Html.EditorFor(model => model.IdProduct)
+    </div>       
         @Html.LabelFor(model => model.ProductName)
         @Model.ProductName
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Quantity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Quantity)
-            @Html.ValidationMessageFor(model => model.Quantity)
-        <p>
-            @Html.LabelFor(model => model.SelectedTypeOperation)
-            @Html.DropDownListFor(model=>model.SelectedTypeOperation, Model.ListTypeOperation, new { @class = "form-control" })
-            <input type="submit" value="Save" />
-        </p>
-    </fieldset>
+    <div class="editor-label">
+        @Html.LabelFor(model => model.Quantity)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.Quantity)
+        @Html.ValidationMessageFor(model => model.Quantity)
+    <p>
+        @Html.LabelFor(model => model.SelectedTypeOperation)
+        @Html.DropDownListFor(model=>model.SelectedTypeOperation, Model.ListTypeOperation, new { @class = "form-control" })
+        <input type="submit" value="Save" />
+    </p>
+    
 }

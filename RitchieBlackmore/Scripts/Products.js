@@ -24,8 +24,8 @@
         ],
         rownumbers: true,
         viewrecords: true,
-        width: 1100,
-        height: "100%",
+        width: 1200,
+        height: 'auto',
         pager: '#jqgPager',
         rowNum: 10,
         rowList: [10, 25, 50, 100],
@@ -48,10 +48,10 @@
 });
 
 function getHtmlNavigationCell(id) {
-    return "<button class=\"ver3_statusbutton\" onclick=\"motionProduct(" + id + ")\">" + "Движение товара</button>" +
-               "<button class=\"ver3_statusbutton\" onclick=\"editRow(" + id + ")\">" + "Редактировать" + "</button>" +
-               "<button class=\"ver3_statusbutton\" onclick=\"deleteRow(" + id + ")\">" + "Удалить" + "</button>" +
-                "<button class=\"ver3_statusbutton\" onclick=\"statisticsProduct(" + id + ")\">" + "Окно статистики</button>"
+    return "<button class=\"ver3_statusbutton small-button\" onclick=\"motionProduct(" + id + ")\"><span class=\"mif-wrench\">" + " MoshionProduct</button>" +
+               "<button class=\"ver3_statusbutton small-button\" onclick=\"editRow(" + id + ")\"><span class=\"mif-pencil\">" + " Edit" + "</button>" +
+               "<button class=\"ver3_statusbutton small-button\" onclick=\"deleteRow(" + id + ")\"><span class=\"mif-cross\">" + " Delete" + "</button>" +
+                "<button class=\"ver3_statusbutton small-button\" onclick=\"statisticsProduct(" + id + ")\"><span class=\"mif-list\">" + "</button>"
            
 }
 
@@ -183,7 +183,7 @@ function callback(value) {
  
 
 function status_button_maker_v3(rowId, options, rowObject) {
-    return "<div id=\"cellNavigationRowNumber" + options.rowId + "\">" +
+    return "<div id=\"cellNavigationRowNumber" + options.rowId + "\" class = \"bg-white\">" +
             getHtmlNavigationCell(options.rowId) +
         "</div>"
 }
