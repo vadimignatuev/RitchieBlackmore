@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using FluentFilters;
+using FluentFilters.Criteria;
 
 namespace RitchieBlackmore
 {
@@ -14,9 +16,21 @@ namespace RitchieBlackmore
 
     public class MvcApplication : System.Web.HttpApplication
     {
-        public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+        public static void RegisterGlobalFilters(GlobalFilterCollection filters, 
+                   FluentFilterCollection fluentFilters)
         {
             filters.Add(new HandleErrorAttribute());
+
+            fluentFilters.Add<AuthorizeAttribute>(c =>
+            {
+                c.Require(new ControllerFilterCriteria("Account")).And(
+                    new AreaFilterCriteria("LogOn")).And(
+                    new AreaFilterCriteria("Register"));
+                c.Exclude(new ControllerFilterCriteria("Account")).And(
+                    new AreaFilterCriteria("LogOn")).And(
+                    new AreaFilterCriteria("Register"));
+            });
+            
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -38,7 +52,12 @@ namespace RitchieBlackmore
             // Use LocalDB for Entity Framework by default
             Database.DefaultConnectionFactory = new SqlConnectionFactory(@"Data Source=(localdb)\v11.0; Integrated Security=True; MultipleActiveResultSets=True");
 
-            RegisterGlobalFilters(GlobalFilters.Filters);
+            // Register provider
+            FilterProviders.Providers.Add(FluentFiltersBuider.Filters);
+            
+            // Register Global Filters
+            RegisterGlobalFilters(GlobalFilters.Filters,
+                          FluentFiltersBuider.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
     }

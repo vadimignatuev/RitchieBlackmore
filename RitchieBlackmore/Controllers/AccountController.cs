@@ -48,7 +48,7 @@ namespace RitchieBlackmore.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return PartialView(model);
+            return View(model);
         }
 
         //

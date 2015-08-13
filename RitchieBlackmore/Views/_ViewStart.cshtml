@@ -1,3 +1,39 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+     
+     string cLayout = "";
+
+     if (routeValues != null) 
+     {
+         if (routeValues.ContainsKey("controller") & routeValues["controller"].ToString() == "Account")
+         {
+                         
+             if (routeValues.ContainsKey("action"))
+             {
+                 if(routeValues["action"].ToString() == "LogOn" || routeValues["action"].ToString() == "Register")
+                 {
+                    cLayout = "~/Views/Shared/_LayoutLogin.cshtml";
+                 }
+                 else
+                 {
+                     cLayout = "~/Views/Shared/_Layout.cshtml";
+                 }
+             }
+             else
+             {
+                 cLayout = "~/Views/Shared/_Layout.cshtml";
+             }
+         }
+         else
+         {
+             cLayout = "~/Views/Shared/_Layout.cshtml";
+         }
+         
+     }
+     else 
+     {
+        cLayout = "~/Views/Shared/_Layout.cshtml";
+     }
+     
+     Layout = cLayout;
 }
