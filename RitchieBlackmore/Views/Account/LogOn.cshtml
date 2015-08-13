@@ -1,48 +1,102 @@
-﻿@model RitchieBlackmore.Models.LogOnModel
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @*<link rel='shortcut icon' type='image/x-icon' href='../favicon.ico' />*@
 
+    <title>Login form :: Metro UI CSS - The front-end framework for developing projects on the web in Windows Metro Style</title>
+
+    <link href="@Url.Content("~/Content/metro.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/metro-icons.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/metro-responsive.css")" rel="stylesheet">
+
+    <script src="@Url.Content("~/Scripts/jquery-2.1.4.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/metro.js")" type="text/javascript"></script>
+ 
+    <style>
+        .login-form {
+            width: 25rem;
+            height: 18.75rem;
+            position: fixed;
+            top: 50%;
+            margin-top: -9.375rem;
+            left: 50%;
+            margin-left: -12.5rem;
+            background-color: #ffffff;
+            opacity: 0;
+            -webkit-transform: scale(.8);
+            transform: scale(.8);
+        }
+    </style>
+
+    <script>
+
+        /*
+        * Do not use this is a google analytics fro Metro UI CSS
+        * */
+        if (window.location.hostname !== 'localhost') {
+
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-58849249-3', 'auto');
+            ga('send', 'pageview');
+
+        }
+
+
+        $(function(){
+            var form = $(".login-form");
+
+            form.css({
+                opacity: 1,
+                "-webkit-transform": "scale(1)",
+                "transform": "scale(1)",
+                "-webkit-transition": ".5s",
+                "transition": ".5s"
+            });
+        });
+    </script>
+</head>
+
+@model RitchieBlackmore.Models.LogOnModel
 @{
-    ViewBag.Title = "Log On";
+    Layout = "";
 }
 
-<h2>Log On</h2>
-<p>
-    Please enter your user name and password. @Html.ActionLink("Register", "Register") if you don't have an account.
-</p>
-
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-
-@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
-
-@using (Html.BeginForm()) {
-    <div>
-        <fieldset>
-            <legend>Account Information</legend>
-
-            <div class="editor-label">
+<body class="bg-darkTeal">
+    <div class="login-form padding20 block-shadow">
+        @using (Html.BeginForm())
+        {
+            <h1 class="text-light">Login to service</h1>
+            <hr class="thin" />
+            <br />
+            <div class="input-control text full-size" data-role="input">
                 @Html.LabelFor(m => m.UserName)
-            </div>
-            <div class="editor-field">
-                @Html.TextBoxFor(m => m.UserName)
+                @Html.TextBoxFor(m => m.UserName, new { id="user_login" })
                 @Html.ValidationMessageFor(m => m.UserName)
+                <button class="button helper-button clear"><span class="mif-cross"></span></button>
             </div>
-
-            <div class="editor-label">
+            <br />
+            <br />
+            <div class="input-control password full-size" data-role="input">
                 @Html.LabelFor(m => m.Password)
-            </div>
-            <div class="editor-field">
-                @Html.PasswordFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { id="user_password" })
                 @Html.ValidationMessageFor(m => m.Password)
+               <button class="button helper-button reveal"><span class="mif-looks"></span></button>
             </div>
-
-            <div class="editor-label">
-                @Html.CheckBoxFor(m => m.RememberMe)
-                @Html.LabelFor(m => m.RememberMe)
+            <br />
+            <br />
+            <div class="form-actions">
+                <button type="submit" class="button primary">Login to...</button>
+                @*<button type="button" class="button link">Cancel</button>*@
             </div>
-
-            <p>
-                <input type="submit" value="Log On" />
-            </p>
-        </fieldset>
+                                 }
     </div>
-}
+
+</body>
+
+</html>

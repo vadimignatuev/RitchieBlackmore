@@ -176,6 +176,16 @@
       <LastGenOutput>IgnatuevTestTask.cs</LastGenOutput>
     </Content>
     <Content Include="Content\jquery.jqGrid\ui.jqgrid.css" />
+    <Content Include="Content\metro-icons.css" />
+    <Content Include="Content\metro-icons.min.css" />
+    <Content Include="Content\metro-responsive.css" />
+    <Content Include="Content\metro-responsive.min.css" />
+    <Content Include="Content\metro-rtl.css" />
+    <Content Include="Content\metro-rtl.min.css" />
+    <Content Include="Content\metro-schemes.css" />
+    <Content Include="Content\metro-schemes.min.css" />
+    <Content Include="Content\metro.css" />
+    <Content Include="Content\metro.min.css" />
     <Content Include="Content\Products.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -212,10 +222,10 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_0050ef_40x100.png" />
     <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_1ba1e2_40x100.png" />
-    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_999999_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_333333_40x100.png" />
+    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_60a917_40x100.png" />
     <Content Include="Content\themes\MyTheme\images\ui-bg_flat_100_ce352c_40x100.png" />
     <Content Include="Content\themes\MyTheme\images\ui-bg_flat_40_999999_40x100.png" />
-    <Content Include="Content\themes\MyTheme\images\ui-bg_flat_55_60a917_40x100.png" />
     <Content Include="Content\themes\MyTheme\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\MyTheme\images\ui-bg_highlight-soft_100_ffffff_1x100.png" />
     <Content Include="Content\themes\MyTheme\images\ui-icons_222222_256x240.png" />
@@ -306,6 +316,8 @@
     <Content Include="Scripts\jquery.jqGrid.src.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\metro.js" />
+    <Content Include="Scripts\metro.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Products.js" />
     <Content Include="Scripts\Products2.js" />
