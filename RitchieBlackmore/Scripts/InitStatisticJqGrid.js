@@ -15,12 +15,12 @@
             repeatitems: false,
             userdata: "userdata"
         },
-        colNames: ['Оператор', 'Тип операции', "Количество товара", "Количество товара"],
+        colNames: ['Operator', 'Type operation', "Quantity product", "Date operation"],
         colModel: [
             { name: 'OperatorName', index: 'OperatorName', width: 150, sortable: true, stype: 'text' },
             { name: 'OperationName', index: 'OperationName', width: 50, sortable: true },
             { name: 'Quantity', index: 'Quantity', width: 50, sortable: true },
-            { name: 'DateOperation', index: 'DateOperation', width: 100, sortable: true },
+            { name: 'DateOperation', formatter: "date", index: 'DateOperation', width: 100, sortable: true },
         ],
         userData: productId,
         rownumbers: true,

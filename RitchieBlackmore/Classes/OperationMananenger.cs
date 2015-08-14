@@ -49,6 +49,15 @@ namespace RitchieBlackmore.Classes
             SourseDbFactory.GetSourseDB().AddNewOperation(operation, userId, DateTime.Now);
         }
 
+        //public List<OperationDataModel> GetPageProductOperation(Int32 productId, String groupName, String sortType, Int32 page, Int32 rows)
+        //{
+        //    int correctPage = PageManager.GetCorrectPage(GetCountProductOperations(productId), rows, page);
+
+        //    List<OperationDataModel> list = SourseDbFactory.GetSourseDB().GetStatisticsProduct(productId, (correctPage - 1) * rows, rows, groupName, sortType);
+
+        //    return list;
+        //}
+
         
     }
 }

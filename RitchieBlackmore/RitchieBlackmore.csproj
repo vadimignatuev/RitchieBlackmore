@@ -153,6 +153,8 @@
       <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\OperationMananenger.cs" />
+    <Compile Include="Classes\PegeManager.cs" />
+    <Compile Include="Classes\ProductManager.cs" />
     <Compile Include="Classes\SourseDbFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
