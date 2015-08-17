@@ -17,7 +17,7 @@ namespace RitchieBlackmore.Classes
         { 
         }
         
-        private ProductModel BuildModel(ProductModel product)
+        private ProductModel PreparationModel(ProductModel product)
         {
             product.TotalCost = product.Price * product.Quantity;
             return product;
@@ -39,23 +39,26 @@ namespace RitchieBlackmore.Classes
 
             for (int i = 0; i < list.Count; i++)
             {
-                list[i] = BuildModel(list[i]);
+                list[i] = PreparationModel(list[i]);
             }
 
             return list;
         }
 
-        public static bool UpdateProduct(ProductModel product)
+        public ProductModel GetProduct(int id) 
         {
-            try 
-            {
-                SourseDbFactory.GetSourseDB().UpdateProduct(product);
-                return true;
-            }
-            catch(Exception e)
-            {
-                return false;
-            }
+            return PreparationModel(SourseDbFactory.GetSourseDB().GetProductById(id));
+        }
+
+        public Boolean UpdateProduct(ProductModel product)
+        {
+            SourseDbFactory.GetSourseDB().UpdateProduct(product);
+            return true;
+        }
+
+        public void AddNewProduct(ProductModel product)
+        {
+            SourseDbFactory.GetSourseDB().AddNewProduct(product);
         }
 
 

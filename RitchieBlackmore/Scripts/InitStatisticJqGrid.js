@@ -17,7 +17,7 @@
         },
         colNames: ['Operator', 'Type operation', "Quantity product", "Date operation"],
         colModel: [
-            { name: 'OperatorName', index: 'OperatorName', width: 150, sortable: true, stype: 'text' },
+            { name: 'UserName', index: 'UserName', width: 150, sortable: true, stype: 'text' },
             { name: 'OperationName', index: 'OperationName', width: 50, sortable: true },
             { name: 'Quantity', index: 'Quantity', width: 50, sortable: true },
             { name: 'DateOperation', formatter: "date", index: 'DateOperation', width: 100, sortable: true },
@@ -30,6 +30,7 @@
         pager: "#gridStatisticsPager-" + productId,
         rowNum: 10,
         rowList: [10, 25, 50, 100],
+        sortname: 'UserName',
         //rowNum: 20, // число отображаемых строк
         loadonce: false, // загрузка только один раз
         //sortname: '_OperatorName', // сортировка по умолчанию по столбцу Id

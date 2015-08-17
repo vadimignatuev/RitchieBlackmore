@@ -1,7 +1,7 @@
 ﻿@model RitchieBlackmore.Models.ProductModel
 
-<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
-<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+@*<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>*@
+@*<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>*@
 
 <script type ="text/javascript">
 
@@ -24,7 +24,7 @@
 <div class="margin60" >
    @using (Ajax.BeginForm("CreateNewProduct", "Products", new AjaxOptions { UpdateTargetId = "newProduct", OnSuccess = "saccessCreateNewProduct" }, new { @id = "createNewProduct" }))
    {
-         @Html.ValidationSummary(true)
+          @Html.ValidationSummary(true)
     
         <legend>Create product</legend>
    
@@ -36,8 +36,10 @@
        
             <div class="editor-field">
                 <div class="input-control password full-size" data-role="input">
-                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "input-control text" } })
-                    @Html.ValidationMessageFor(model => model.Name)
+                    @Html.EditorFor(model => model.Name)
+                    <div class ="fg-red">
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
                 </div>
             </div>
         </div>
@@ -47,17 +49,19 @@
             </div>
             <div class="editor-field">
                 <div class="input-control password full-size" data-role="input">
-                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "input-control text" } })
-                    @Html.ValidationMessageFor(model => model.Price)
+                    @Html.EditorFor(model => model.Price )
+                    <div class ="fg-red">
+                        @Html.ValidationMessageFor(model => model.Price)
+                    </div>
                 </div>
             </div>
         </div>
        
-       <button class="button success" onclick="clickSaccessAddProduct"> Start <span class="mif-checkmark"></span></button>
+       <button class="button success" onclick="clickSaccessAddOperation"> Create <span class="mif-checkmark"></span></button>
 
        <div style ="display:none">
            <p>
-             <input id ="idSubmitNewProduct" type="submit" class = "button primary" value="Create" />
+             <input id ="idSubmitNewOperation" type="submit" class = "button primary" value="Create" />
            </p>
        </div>
    }            

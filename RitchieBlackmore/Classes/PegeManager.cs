@@ -25,25 +25,32 @@ namespace RitchieBlackmore.Classes
         public Int32 GetCountPage()
         {
             Int32 pageCount;
-
-            if (TotalRowsCount % CountRowsInPage > 0)
+            if (TotalRowsCount != 0)
             {
-                pageCount = TotalRowsCount / CountRowsInPage + 1;
+                if (TotalRowsCount % CountRowsInPage > 0)
+                {
+                    pageCount = TotalRowsCount / CountRowsInPage + 1;
+                }
+                else
+                {
+                    pageCount = TotalRowsCount / CountRowsInPage;
+                }
             }
             else 
             {
-                pageCount = TotalRowsCount / CountRowsInPage;
+                pageCount = 1;
             }
             return pageCount;
         }
 
+        
         public Int32 GetCorrectPage(Int32 page)
         {
             int startPage;
             int maxCountPage = GetCountPage();
-            if (page > maxCountPage)
+            if (page > maxCountPage && maxCountPage!= 0)
             {
-                startPage = (maxCountPage);
+                startPage = maxCountPage;
             }
             else
             {

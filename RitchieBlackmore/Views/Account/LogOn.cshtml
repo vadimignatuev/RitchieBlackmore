@@ -14,7 +14,9 @@
     <div class="input-control text full-size" data-role="input">
         @Html.LabelFor(m => m.UserName)
         @Html.TextBoxFor(m => m.UserName, new { id="user_login" })
-        @Html.ValidationMessageFor(m => m.UserName)
+        <div class ="fg-red">
+            @Html.ValidationMessageFor(m => m.UserName)
+        </div>
         <button class="button helper-button clear"><span class="mif-cross"></span></button>
     </div>
     <br />
@@ -22,7 +24,9 @@
     <div class="input-control password full-size" data-role="input">
         @Html.LabelFor(m => m.Password)
         @Html.PasswordFor(m => m.Password, new { id="user_password" })
-        @Html.ValidationMessageFor(m => m.Password)
+        <div class ="fg-red">
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
         <button class="button helper-button reveal"><span class="mif-looks"></span></button>
     </div>
     <br />

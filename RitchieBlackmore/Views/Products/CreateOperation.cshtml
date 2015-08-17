@@ -4,30 +4,60 @@
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
 
-<div class ="cell size-x400">
-    @using (Ajax.BeginForm("CreateProductOperation", "Products", new AjaxOptions { OnSuccess = "successNewOperatin" }, new { @id = "createNewOperationProduct" })) 
-    {   
-         @Html.ValidationSummary(true)
-        <div style ="display: none">
-            @Html.LabelFor(model => model.IdProduct)
-            @Html.EditorFor(model => model.IdProduct)
-            <br />
-        </div>       
-            @Html.LabelFor(model => model.ProductName)
-            @Model.ProductName
-        <br />
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Quantity)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Quantity)
-            @Html.ValidationMessageFor(model => model.Quantity)
-        <p>
-            @Html.LabelFor(model => model.SelectedTypeOperation)
-            @Html.DropDownListFor(model=>model.SelectedTypeOperation, Model.ListTypeOperation, new { @class = "form-control" })
-            <input type="submit" value="Save" />
-        </p>
-        </div>
-    
+<script type ="text/javascript">
+
+    function clickSaccessAddOperation() {
+        var link = $("#idSubmitNewOperation")[0];
+        var linkEvent = null;
+        if (document.createEvent) {
+            linkEvent = document.createEvent('MouseEvents');
+            linkEvent.initEvent('click', true, true);
+            link.dispatchEvent(linkEvent);
+        }
+        else if (document.createEventObject) {
+            linkEvent = document.createEventObject();
+            link.fireEvent('onclick', linkEvent);
+        }
     }
+
+</script>
+
+<div class ="cell size-x400">
+    @using (Ajax.BeginForm("CreateProductOperation", "Products", new AjaxOptions { OnSuccess = "successNewOperatin", OnFailure = "parseIsErrorResponse" }, new { @id = "createNewOperationProduct" })) 
+    {   
+      
+        <div class="flex-grid no-responsive-future" style="height: 100%; width: 100%">
+            <div class="row margin20" style="height: 80%">
+                <div class ="cell">
+                    @Html.ValidationSummary(true)
+                <div style ="display: none">
+                    @Html.LabelFor(model => model.IdProduct)
+                    @Html.EditorFor(model => model.IdProduct)
+                    <br />
+                </div>       
+                    <h4>@Html.LabelFor(model => model.ProductName): @Model.ProductName</h4>
+                    <br />
+                <div class="editor-label">
+                    @Html.LabelFor(model => model.Quantity)
+                </div>
+                <div class="nput-control password full-size">
+                    @Html.EditorFor(model => model.Quantity)
+                    <div class ="fg-red">
+                        <h8>@Html.ValidationMessageFor(model => model.Quantity)</h8>
+                    </div>
+                </div>
+                <div class ="margin20 no-margin-left">
+                    @Html.DropDownListFor(model=>model.IdOperation, Model.ListTypeOperation, new { @class = "form-control" })
+                </div>
+                </div>
+            </div>
+            <button class="button success margin20 place-right" onclick="clickSaccessAddOperation"> Create <span class="mif-checkmark"></span></button>
+
+            <div style ="display:none">
+                <p>
+                    <input id ="idSubmitNewOperation" type="submit" class = "button primary" value="Create" />
+                </p>
+            </div>
+        </div> 
+}
 </div>

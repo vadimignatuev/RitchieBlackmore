@@ -8,7 +8,7 @@ namespace RitchieBlackmore.Models
 {
     public class OperationDataModel
     {
-        public String OperatorName {get; set;}
+        public String UserName {get; set;}
 
         public String OperationName { get; set; }
 

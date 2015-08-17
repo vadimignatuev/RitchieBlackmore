@@ -46,8 +46,8 @@ namespace RitchieBlackmore.Classes
 
             using (var db = GetDbConnection())
             {
-                var s = db.GetRangeSortedProducts(startPosition, count, field, SortOrder);
-                listProducts = s.Select(it => Mapper.DynamicMap<Models.ProductModel>(it)).ToList();
+                var listProduct = db.GetRangeSortedProducts(startPosition, count, field, SortOrder);
+                listProducts = listProduct.Select(it => Mapper.DynamicMap<Models.ProductModel>(it)).ToList();
             }
             return listProducts;
         }
@@ -55,7 +55,7 @@ namespace RitchieBlackmore.Classes
         public List<OperationDataModel> GetStatisticsProduct(Int32 productId, Int32 startPosition, Int32 count, String field, String SortOrder)
         {
             Mapper.CreateMap<GetStatisticsProduct_Result, OperationDataModel>()
-                .ForMember(op => op.OperatorName, conf => conf.MapFrom(ol => ol.UserName));
+                .ForMember(op => op.UserName, conf => conf.MapFrom(ol => ol.UserName));
             
             List<OperationDataModel> listStatistics;
 
@@ -126,7 +126,8 @@ namespace RitchieBlackmore.Classes
         {
             using (var db = GetDbConnection())
             {
-                return db.StatisticsOperation.Count();
+                int i = db.StatisticsOperation.Where(it => it.ProductId == id).Count();
+                return i;
             }
         }
     }

@@ -13,10 +13,10 @@
             root: "rows",
             repeatitems: false
         },
-        colNames: ['Id','Название', 'Цена', ""],
+        colNames: ['Id','Name', 'Price', ""],
         colModel: [
             { name: 'Id', index: 'Id', hidden: true, editable: true },
-            { name: 'Name', index: 'Name', width: 150, stype: 'text', editable: true },
+            { name: 'Name', index: 'Name', width: 150, stype: 'text', editable: true, editoptions : { maxlength: 50} },
             { name: 'Price', index: 'Price', width: 50, sortable: true, editable: true },
             {
                 name: 'status', index: status, formatter: status_button_maker_v3
@@ -29,10 +29,9 @@
         pager: '#jqgPager',
         rowNum: 10,
         rowList: [10, 25, 50, 100],
-        //rowNum: 20, // число отображаемых строк
-        loadonce: false, // загрузка только один раз
-        sortname: 'Id', // сортировка по умолчанию по столбцу Id
-        sortorder: "asc", // порядок сортировки
+        loadonce: false, 
+        sortname: 'Id', 
+        sortorder: "asc",
         viewrecords: true,
         editurl: "Products/SaveChange",
         onSelectRow: function (rowid, status, e) {
@@ -43,6 +42,30 @@
         },
         gridComplete: function(){}
         
+    });
+
+    $("#createNewProduct").validate({
+        rules: {
+            Name: {
+                required: true,
+                maxlength: 50
+            },
+            Price: {
+                required: true,
+                range: [0, 10000]
+            },
+        },
+        messages: {
+        Name: {
+                required: "Tou must Enter Name", 
+                maxlength: "length "
+        },
+        Price: {
+            required: "Tou must enter price",
+            range: "Must be in gange 0 to 10000"
+        },
+        }
+
     });
 
 });
@@ -101,6 +124,8 @@ function motionProduct(id) {
                 .addClass("dialog")
                 .appendTo("body")
                 .dialog({
+                    //height: 350,
+                    //width: 400,
                     title: strTitle,
                     close: function () { $(this).remove() },
                     modal: true
@@ -110,11 +135,12 @@ function motionProduct(id) {
     dialog.attr('id', 'motionDialog');
 }
 
-function successNewOperatin()
+function successNewOperatin(response)
 {
     $("#motionDialog").dialog('close');
     grid.trigger("reloadGrid", [{ current: true }]);
     updateProductStatistic();
+    parseIsErrorResponse(response);
 }
 
 function editRow(id) {
@@ -155,8 +181,14 @@ function errorServerMassege(response) {
 }
 
 function parseIsErrorResponse(response) {
-    console.log(response);
-    var respObj = $.parseJSON(response.replace(/(\r\n|\n|\r)/gm, ""));
+    console.log("responce before pars " + response);
+    if (response.responseJSON != null) {
+        var respObj = $.parseJSON(response.responseJSON.replace(/(\r\n|\n|\r)/gm, ""));
+    }
+    else {
+        var respObj = $.parseJSON(response.replace(/(\r\n|\n|\r)/gm, ""));
+    }
+    
     console.log(respObj);
     if (respObj.success == false) {
         $('#ErrorText').html("<ul>" + respObj.errors + "</ul>");
@@ -254,6 +286,11 @@ function clickHreh(hrefId, e) {
 
 function saccessCreateNewProduct() {
     $("#createNewProduct").trigger('reset');
+    grid.trigger("reloadGrid", [{ current: true }]);
+}
+
+function saccessCreateNewOperation() {
+    $("#createNewOperation").trigger('reset');
     grid.trigger("reloadGrid", [{ current: true }]);
 }
 

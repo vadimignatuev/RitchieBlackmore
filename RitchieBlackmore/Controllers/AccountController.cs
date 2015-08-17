@@ -38,7 +38,7 @@ namespace RitchieBlackmore.Controllers
                     }
                     else
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Products");
                     }
                 }
                 else

@@ -33,22 +33,22 @@ namespace RitchieBlackmore.Controllers
 
             result = new JsonResult()
             {
-                Data = new { page = page, total = countRows / rows, records = countRows, rows = productsList }
+                Data = new { page = page, total = productManager.GetCountPage(), records = productManager.GetCountProduct(), rows = productsList }
             };
             return result;
         }
 
-        //public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean? _search, Int32 productId)
-        //{
-        //    ProductManager productManager = new ProductManager();
-        //    List<OperationDataModel> statisticsList = productManager.GetPageProductOperation(productId, sidx, sord, page, rows);
-            
-        //    JsonResult result = new JsonResult()
-        //    {
-        //        Data = new { page = page, total = 100, records = 1000, rows = statisticsList }
-        //    };
-        //    return result;
-        //}
+        public JsonResult GetStatisticProduct(String sidx, String sord, Int32 page, Int32 rows, Boolean? _search, Int32 productId)
+        {
+            OperationMananenger operationMananenger = new OperationMananenger(productId, page, rows);
+            List<OperationDataModel> statisticsList = operationMananenger.GetPageProductOperation(productId, sidx, sord);
+
+            JsonResult result = new JsonResult()
+            {
+                Data = new { page = page, total = operationMananenger.GetCountPage(), records = operationMananenger.GetCountRecords(productId), rows = statisticsList }
+            };
+            return result;
+        }
 
         //[HttpPost]
         public JsonResult SaveChange(Int32 Id, String Name, Decimal Price)
@@ -57,10 +57,11 @@ namespace RitchieBlackmore.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ProductModel updatingProduct = SourseDbFactory.GetSourseDB().GetProductById(Id);
+                    ProductManager productManager = new ProductManager();
+                    ProductModel updatingProduct = productManager.GetProduct(Id);
                     updatingProduct.Name = Name;
                     updatingProduct.Price = Price;
-                    ProductManager.UpdateProduct(updatingProduct);
+                    productManager.UpdateProduct(updatingProduct);
                 }
                 else 
                 {
@@ -80,7 +81,8 @@ namespace RitchieBlackmore.Controllers
             if (ModelState.IsValid)
             {
                 product.Quantity = 0;
-                SourseDbFactory.GetSourseDB().AddNewProduct(product);
+                ProductManager productManager = new ProductManager();
+                productManager.AddNewProduct(product);
                 ProductModel newProduct = new ProductModel();
                 ViewBag.Massege = "Saccess!!!";
                 return PartialView("CreateNewProduct", newProduct);
@@ -96,43 +98,39 @@ namespace RitchieBlackmore.Controllers
         //[HttpPost]
         public ActionResult ProductDetails(Int32 id)
         {
-            ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(id);
-            return PartialView(product); 
+            ProductManager productManager = new ProductManager();
+            return PartialView(productManager.GetProduct(id)); 
         }
 
-        public ActionResult CreateProductOperation(Int32? Id)
+        public ActionResult CreateProductOperation(Int32 Id)
         {
-            OperationModel newOperation = new OperationModel();
-            newOperation.IdProduct = Id.Value;
-            newOperation.ProductName = SourseDbFactory.GetSourseDB().GetProductById(Id.Value).Name;
-
-            List<SelectListItem> list = new List<SelectListItem>();
-            list.Add(new SelectListItem {
-                Value = "1",
-                Text = "Приход",
-            });
-            list.Add(new SelectListItem
-            {
-                Value = "2",
-                Text = "Расход",
-            });
-            newOperation.ListTypeOperation = new SelectList(list, "Value", "Text");
-            newOperation.SelectedTypeOperation = "1";
+            OperationMananenger operationManager = new OperationMananenger();
+            OperationModel newOperation = operationManager.CreateNewOperation(Id);
             return PartialView("CreateOperation", newOperation);
         }
 
         [HttpPost]
-        public void CreateProductOperation(OperationModel operation)
+        public JsonResult CreateProductOperation(OperationModel operation)
         {
-            OperationMananenger operationManager = new OperationMananenger();
-            operationManager.PerformOperation(operation);
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    OperationMananenger operationManager = new OperationMananenger();
+                    operationManager.PerformOperation(operation);
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.Message);
+            }
+            return PrepareJsonResult();           
         }
 
         public JsonResult DeleteProduct(Int32 id)
         {
             try
             {
-                throw new NullReferenceException();
                 SourseDbFactory.GetSourseDB().DeleteProduct(id);
             }
             catch(Exception e)
