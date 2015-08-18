@@ -12,8 +12,8 @@
                 <div class ="cell">
                     @Html.ValidationSummary(true)
                 <div style ="display: none">
-                    @Html.LabelFor(model => model.IdProduct)
-                    @Html.EditorFor(model => model.IdProduct)
+                    @Html.LabelFor(model => model.ProductId)
+                    @Html.EditorFor(model => model.ProductId)
                     <br />
                 </div>       
                     <h4>@Html.LabelFor(model => model.ProductName): @Model.ProductName</h4>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class ="margin20 no-margin-left">
-                    @Html.DropDownListFor(model=>model.IdOperation, Model.ListTypeOperation, new { @class = "form-control" })
+                    @Html.DropDownListFor(model=>model.OperationId, Model.ListTypeOperation, new { @class = "form-control" })
                 </div>
                 </div>
             </div>

@@ -62,10 +62,11 @@ function getHtmlNavigationCell(id) {
 }
 
 function changeViewSelRow(id) {
+    var productId = grid.getRowData(id).Id;
     var mydiv = $("#cellNavigationRowNumber" + id);
-    console.log("That is some " + mydiv)
-    $("#cellNavigationRowNumber" + id).html("<button class=\"ver3_statusbutton button small-button success\" onclick=\"saveChange(" + id + ")\"><span class=\"mif-floppy-disk\"></button>" +
-        "<button class=\"ver3_statusbutton button small-button primary\" onclick=\"backEdit(" + id + ")\"><span class=\"mif-arrow-right\"></button>");
+    console.log("That is some " + productId)
+    $("#cellNavigationRowNumber" + id).html("<button class=\"ver3_statusbutton button small-button success\" onclick=\"saveChange(" + id + "," + productId + ")\"><span class=\"mif-floppy-disk\"></button>" +
+        "<button class=\"ver3_statusbutton button small-button primary\" onclick=\"backEdit(" + id + "," + productId + ")\"><span class=\"mif-arrow-right\"></button>");
 }
 
 
@@ -107,39 +108,90 @@ function successNewOperatin(response)
 
 function editRow(id) {
     var rowData = grid.getRowData(id);
+    console.log("rowData before Edit" + rowData);
     $.ajax({
-        url: '@Url.Action("StartEditRow", "Products")',
+        url: $("#idStartEdit").data('starteditrowUrl'),
         type: 'POST',
-        data: { 'productId': rowData.Id, "productName": rowData.Name, "price": rowData.Price }
+        data: { "productId": rowData.Id, "productName": rowData.Name, "price": rowData.Price }
     });
+    changeViewSelRow(id);
     grid.restoreRow(id);
     grid.editRow(id, true);
-    changeViewSelRow(id);
+    
 }
 
-function backEdit(id) {
+function backEdit(id, productId) {
+    console.log("successSaveEdit backEdit");
     grid.restoreRow(id);
     $("#cellNavigationRowNumber" + id).html(getHtmlNavigationCell(id));
 
 }
 
-function saveChange(id)
+function saveChange(id, productId)
 {
-    console.log("saveChange");
-    var Id = grid.getRowData(id).Id;
-    console.log(Id);
+    //grid.setRowData(id);
+    var rowData = grid.getRowData(id);
     var responseEdit;
+    
+    console.log("rowData  after  " + grid.getCell(id, 1));
+
+    $.when($.ajax({
+        url: $("#idEndEditRow").data('endeditrowUrl'),
+        type: 'POST',
+        data: { "productId": productId, "isSave": true },
+        async: false,
+        success: function (response) {
+            responseEdit = response;
+        }
+    })).then(function () {
+        if (!responseEdit.isChanges) {
+            successSaveEdit(id, responseEdit, productId);
+        }
+        else {
+            showSaveEditDialog(id, productId);
+        }
+    });
+  
+}
+
+function successSaveEdit(id, response, productId) {
+    console.log("successSaveEdit");
+    //grid.editRow(id, true);
     grid.saveRow(id,
-        {
-            successfunc: function (response) {
+    {
+        successfunc: function (response) {
+            console.log("successSaveEdit successfunc");
+            if (parseIsErrorResponse(response)) {
+                console.log("successSaveEdit successfunc response");
                 responseEdit = response;
                 grid.restoreRow(id);
-                backEdit(id);
+                backEdit(id, productId);
                 return true;
-            },
+            }
+            else {
+                backEdit(id, productId);
+            }
         }
-    );
-    parseIsErrorResponse(responseEdit);
+    });
+    grid.trigger("reloadGrid", [{ current: true }]);
+}
+
+function showSaveEditDialog(id, productId) {
+    console.log("showSaveEditDialog");
+    grid.restoreRow(id);
+    var rowData = grid.getRowData(id);
+
+    var href = $("#idTableChangesProduct").data('tablechangesproductUrl')+"?productId:" + rowData.Id + "&productName:" + rowData.Name + "&price:" + rowData.Price;
+
+    var dialog = $("<div></div>")
+                .addClass("dialog")
+                .appendTo("body")
+                .dialog({
+                                        
+                    close: function () { $(this).remove() },
+                    modal: true
+                })
+                .load(href);
 }
 
 function parseIsErrorResponse(response) {

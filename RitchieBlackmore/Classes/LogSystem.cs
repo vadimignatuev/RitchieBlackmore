@@ -24,14 +24,14 @@ namespace RitchieBlackmore.Classes
             MassegeDictionary = new Dictionary<Type, string>();
         }
 
-        public void AddSessionEdit(Guid userId, ProductModel ProductId) 
+        public void AddSessionEdit(Guid userId, ProductModel product) 
         {
-            ListSessionEdit.Add(new KeyValuePair<Guid, ProductModel>(userId, ProductId));
+            ListSessionEdit.Add(new KeyValuePair<Guid, ProductModel>(userId, product));
         }
 
         public ProductModel GetProductBeforeEdit(Guid userId, Int32 productId)
         {
-            return ListSessionEdit.Where(it => it.Key == userId).FirstOrDefault(it => it.Value.Id == productId).Value;
+            return ListSessionEdit.Where(it => it.Key == userId).LastOrDefault(it => it.Value.Id == productId).Value;
         }
 
         public Boolean Compare(ProductModel firstProduct, ProductModel secondProduct) 
@@ -62,13 +62,18 @@ namespace RitchieBlackmore.Classes
             {
                 ProductManager productManager = new ProductManager();
                 ProductModel presentProduct = productManager.GetProduct(productId);
-                return Compare(beforeEdit, presentProduct);
+                return !Compare(beforeEdit, presentProduct);
             }
             else 
             {
                 return false;
             }
         }
+
+        public void DeleteEditSession(Guid userId, Int32 productId) 
+        {
+            ListSessionEdit.Remove(ListSessionEdit.Where(it => it.Key == userId).FirstOrDefault(it => it.Value.Id == productId));
+        } 
 
         public TableChangesProduct GetTableChangesProduct(Guid userId, ProductModel editProduct)
         {
