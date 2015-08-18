@@ -39,7 +39,7 @@ namespace RitchieBlackmore
 
             routes.MapRoute(
                 "Default", // Route name
-                "{controller}/{action}/{id}", // URL with parameters
+                "{controller}/{action}/{productId}", // URL with parameters
                 new { controller = "Products", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 

@@ -1,25 +1,5 @@
 ﻿@model RitchieBlackmore.Models.ProductModel
 
-@*<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>*@
-@*<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>*@
-
-<script type ="text/javascript">
-
-    function clickSaccessAddProduct() {
-        var link = $("#idSubmitNewProduct")[0];
-        var linkEvent = null;
-        if (document.createEvent) {
-            linkEvent = document.createEvent('MouseEvents');
-            linkEvent.initEvent('click', true, true);
-            link.dispatchEvent(linkEvent);
-        }
-        else if (document.createEventObject) {
-            linkEvent = document.createEventObject();
-            link.fireEvent('onclick', linkEvent);
-        }
-    }
-
-</script>
 
 <div class="margin60" >
    @using (Ajax.BeginForm("CreateNewProduct", "Products", new AjaxOptions { UpdateTargetId = "newProduct", OnSuccess = "saccessCreateNewProduct" }, new { @id = "createNewProduct" }))

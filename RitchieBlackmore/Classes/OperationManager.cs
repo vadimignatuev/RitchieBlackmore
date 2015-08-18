@@ -8,39 +8,20 @@ using System.Web.Mvc;
 
 namespace RitchieBlackmore.Classes
 {
-    public class OperationMananenger : PageManager
+    public class OperationManager : PageManager
     {
         private Dictionary<String, Int32> _DbOperationType;
 
-        public OperationMananenger() : base(0,0,0)
+        private void UpdateProductAfterOperation(OperationModel operation)
         {
-            _DbOperationType = new Dictionary<String, Int32>();
-            _DbOperationType.Add("arrival", 1);
-            _DbOperationType.Add("expense", 2);
-        }
+            ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(operation.ProductId);
 
-        public OperationMananenger(Int32 productId, Int32 page, Int32 countRowsInPage)
-            : base(page, countRowsInPage, SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(productId)) 
-        {
-            int i = SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(productId);
-        }
-    
-
-        public Int32 GetOperationId(String operationName)
-        {
-            return _DbOperationType[operationName];
-        }
-
-        private void UpdateProductAfterOperation(OperationModel operation) 
-        {
-            ProductModel product = SourseDbFactory.GetSourseDB().GetProductById(operation.IdProduct);
-
-            if (operation.IdOperation == GetOperationId("arrival"))
+            if (operation.OperationId == GetOperationId("arrival"))
             {
                 product.Quantity = product.Quantity + operation.Quantity;
             }
 
-            if (operation.IdOperation == GetOperationId("expense"))
+            if (operation.OperationId == GetOperationId("expense"))
             {
                 product.Quantity = product.Quantity - operation.Quantity;
             }
@@ -48,11 +29,29 @@ namespace RitchieBlackmore.Classes
             SourseDbFactory.GetSourseDB().UpdateProduct(product);
         }
 
+        public OperationManager() : base(0,0,0)
+        {
+            _DbOperationType = new Dictionary<String, Int32>();
+            _DbOperationType.Add("arrival", 1);
+            _DbOperationType.Add("expense", 2);
+        }
+
+        public OperationManager(Int32 productId, Int32 page, Int32 countRowsInPage)
+            : base(page, countRowsInPage, SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(productId)) 
+        {
+            int i = SourseDbFactory.GetSourseDB().GetCountOperationWithProduct(productId);
+        }
+    
+        public Int32 GetOperationId(String operationName)
+        {
+            return _DbOperationType[operationName];
+        }
+
         public void PerformOperation(OperationModel operation)
         {
             MembershipUser mu = Membership.GetUser();
             Guid userId = (Guid)mu.ProviderUserKey;
-            operation.IdOperation = Convert.ToInt32(operation.IdOperation);
+            operation.OperationId = Convert.ToInt32(operation.OperationId);
             this.UpdateProductAfterOperation(operation);
             SourseDbFactory.GetSourseDB().AddNewOperation(operation, userId, DateTime.Now);
         }
@@ -71,7 +70,7 @@ namespace RitchieBlackmore.Classes
         public OperationModel CreateNewOperation(int id)
         {
             OperationModel newOperation = new OperationModel();
-            newOperation.IdProduct = id;
+            newOperation.ProductId = id;
             ProductManager productMamager = new ProductManager();
             newOperation.ProductName = productMamager.GetProduct(id).Name;
             List<SelectListItem> list = new List<SelectListItem>();
@@ -87,9 +86,6 @@ namespace RitchieBlackmore.Classes
             newOperation.ListTypeOperation = new SelectList(list, "Value", "Text");
             return newOperation;
         }
-
-
-
-        
+                
     }
 }

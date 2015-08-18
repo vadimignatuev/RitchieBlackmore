@@ -61,6 +61,13 @@ namespace RitchieBlackmore.Classes
             SourseDbFactory.GetSourseDB().AddNewProduct(product);
         }
 
+        public void DeleteProduct(Int32 id)
+        {
+            if (GetProduct(id) != null)
+            {
+                SourseDbFactory.GetSourseDB().DeleteProduct(id);
+            }
+        }
 
     }
 }

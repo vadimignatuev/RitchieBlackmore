@@ -11,17 +11,7 @@
 <script src="@Url.Content("~/Scripts/i18n/grid.locale-ru.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.jqGrid.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/Products.js")" type="text/javascript"></script>
-
-<script type ="text/javascript">
-    function showCharm(id) {
-        var charm = $(id).data("charm");
-        if (charm.element.data("opened") === true) {
-            charm.close();
-        } else {
-            charm.open();
-        }
-    }
-</script>
+<script src="@Url.Content("~/Scripts/ServiceViewProducts.js")" type="text/javascript"></script>
 
 <div class="flex-grid no-responsive-future" style="height: 100%">
     <div class="row" style="height: 100%">
@@ -31,7 +21,6 @@
                 </div>
             </div>
         <div class="cell size-x300 " >
-            
         </div>
         <div class="cell auto-size padding20 bg-white" id="cell-content-table-product" >
             <h1 class="text-light">Product Tables <span class="mif-table place-right fg-crimson" onclick="showCharm('#createNewProductcharm')"></span></h1>
@@ -61,12 +50,9 @@
     <div id ="ErrorText"></div>
 </div>
 
-
-
-
 <div id ="formsStatisticsProduct" style =" display:none">
-                 @Html.Partial("StatisticsOperationProduct")
-            </div>
+     @Html.Partial("StatisticsOperationProduct")
+</div>
 
 <div id ="deleteDialogForm" style =" display:none"  data-deleteProduct-url="@Url.Action("DeleteProduct", "Products")">
      <div id="dialog-confirm">

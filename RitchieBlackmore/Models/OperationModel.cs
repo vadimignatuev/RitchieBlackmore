@@ -10,9 +10,9 @@ namespace RitchieBlackmore.Models
 {
     public class OperationModel
     {
-        public Int32 IdProduct { get; set; }
+        public Int32 ProductId { get; set; }
 
-        public Int32 IdOperation { get; set; }
+        public Int32 OperationId { get; set; }
 
         [Required(ErrorMessage = "field must be filled")]
         [Range(0, 1000, ErrorMessage = "Quantity can not be in negative and more than 1000")]

@@ -72,8 +72,8 @@ namespace RitchieBlackmore.Classes
             using (var db = GetDbConnection())
             {
                 StatisticsOperation newOperation = new StatisticsOperation();
-                newOperation.OperationTypeId = operation.IdOperation;
-                newOperation.ProductId = operation.IdProduct;
+                newOperation.OperationTypeId = operation.OperationId;
+                newOperation.ProductId = operation.ProductId;
                 newOperation.Quantity = operation.Quantity;
                 newOperation.UserId = userId;
                 newOperation.DateOperation = dateOperation;

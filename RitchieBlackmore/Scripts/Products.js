@@ -44,30 +44,6 @@
         
     });
 
-    $("#createNewProduct").validate({
-        rules: {
-            Name: {
-                required: true,
-                maxlength: 50
-            },
-            Price: {
-                required: true,
-                range: [0, 10000]
-            },
-        },
-        messages: {
-        Name: {
-                required: "Tou must Enter Name", 
-                maxlength: "length "
-        },
-        Price: {
-            required: "Tou must enter price",
-            range: "Must be in gange 0 to 10000"
-        },
-        }
-
-    });
-
 });
 
 function status_button_maker_v3(rowId, options, rowObject) {
@@ -92,20 +68,6 @@ function changeViewSelRow(id) {
         "<button class=\"ver3_statusbutton button small-button primary\" onclick=\"backEdit(" + id + ")\"><span class=\"mif-arrow-right\"></button>");
 }
 
-function updatePosition(rowid) {
-    rowNumber = $(grid).getGridParam("rowNum");
-    var strId = "";
-
-    if (rowid <= (rowNumber - 4)) {
-        strId = "#cellNavigationRowNumber" + rowid;
-    }
-    else {
-        strId = "#cellNavigationRowNumber" + (rowNumber-4);
-    }
-    var pos = $(strId).offset();
-    var left = $("#productDetails").offset().left;
-    $("#productDetails").offset({ top: pos.top, left: left });
-}
 
 function updateProductStatistic()
 {
@@ -144,6 +106,12 @@ function successNewOperatin(response)
 }
 
 function editRow(id) {
+    var rowData = grid.getRowData(id);
+    $.ajax({
+        url: '@Url.Action("StartEditRow", "Products")',
+        type: 'POST',
+        data: { 'productId': rowData.Id, "productName": rowData.Name, "price": rowData.Price }
+    });
     grid.restoreRow(id);
     grid.editRow(id, true);
     changeViewSelRow(id);
@@ -174,12 +142,6 @@ function saveChange(id)
     parseIsErrorResponse(responseEdit);
 }
 
-function errorServerMassege(response) {
-    $("#dialogError").dialog({
-        resizable: false,
-        });
-}
-
 function parseIsErrorResponse(response) {
     console.log("responce before pars " + response);
     if (response.responseJSON != null) {
@@ -197,6 +159,12 @@ function parseIsErrorResponse(response) {
     }
     return false;
 };
+
+function errorServerMassege(response) {
+    $("#dialogError").dialog({
+        resizable: false,
+    });
+}
 
 function deleteRow(id) {
         
@@ -240,18 +208,6 @@ function successDelete(id) {
     grid.trigger("reloadGrid", [{ current: true }]);
 }
 
-function callback(value) {
-    if (value) {
-        alert("Confirmed");
-    } else {
-        alert("Rejected");
-    }
-}
- 
-
-
-
-
 function getProductDetails(id) {
     var url = $("#productDetails").data('productdetailsUrl');
     $("#productStatistic").load(url + "?id=" + id);
@@ -280,8 +236,9 @@ function clickHreh(hrefId, e) {
         linkEvent = document.createEventObject();
         link.fireEvent('onclick', linkEvent);
     }
-
-    e.preventDefault();
+    if (e != null) {
+        e.preventDefault();
+    }
 }
 
 function saccessCreateNewProduct() {

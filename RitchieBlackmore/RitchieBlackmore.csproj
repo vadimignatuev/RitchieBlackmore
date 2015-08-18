@@ -152,9 +152,11 @@
     <Compile Include="Classes\EntityFramworcDbContex\Users.cs">
       <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
-    <Compile Include="Classes\OperationMananenger.cs" />
-    <Compile Include="Classes\PegeManager.cs" />
+    <Compile Include="Classes\LogSystem.cs" />
+    <Compile Include="Classes\OperationManager.cs" />
+    <Compile Include="Classes\PageManager.cs" />
     <Compile Include="Classes\ProductManager.cs" />
+    <Compile Include="Classes\Singleton.cs" />
     <Compile Include="Classes\SourseDbFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Models\OperationDataModel.cs" />
     <Compile Include="Models\OperationModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\TableChangesProduct.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -325,6 +328,7 @@
     <Content Include="Scripts\metro.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\Products.js" />
+    <Content Include="Scripts\ServiceViewProducts.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -355,7 +359,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Products\Index.cshtml" />
-    <Content Include="Views\Products\MotionProduct.cshtml" />
     <Content Include="Views\Products\StatisticsOperationProduct.cshtml" />
     <Content Include="Views\Products\CreateOperation.cshtml" />
     <Content Include="Views\Products\CreateNewProduct.cshtml" />
