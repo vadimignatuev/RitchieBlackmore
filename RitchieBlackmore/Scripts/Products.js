@@ -46,6 +46,10 @@
 
 });
 
+var productBeforEdit;
+var productAfterEdit;
+var dialogChoiseSaveEdit;
+
 function status_button_maker_v3(rowId, options, rowObject) {
     return "<div id=\"cellNavigationRowNumber" + options.rowId + "\" class = \"\">" +
         "<div class=\"\">" +
@@ -121,8 +125,6 @@ function editRow(id) {
     console.log(productBeforEdit);
 }
 
-var productBeforEdit;
-var productAfterEdit;
 
 function fixProductInEdit(id) {
 
@@ -145,14 +147,9 @@ function backEdit(id, productId) {
 
 function saveChange(id, productId)
 {
-    //grid.setRowData(id);
-    var rowData = grid.getRowData(id);
-    var responseEdit;
-    var datasome = grid.getGridParam('savedRow');
-    console.log("savedRow " + datasome.Name);
-    console.log("rowData  after  " + grid.getCell(id, 1));
-
-
+   productAfterEdit = fixProductInEdit(id);
+   var responseEdit;
+    
     $.when($.ajax({
         url: $("#idEndEditRow").data('endeditrowUrl'),
         type: 'POST',
@@ -215,15 +212,13 @@ function showSaveEditDialog(id, productId) {
         }
     })).then(function () {
         $("#dialogChooseSaveType").html(responseHtml);
-        var dialog = $("#dialogChooseSaveType")
+        dialogChoiseSaveEdit = $("#dialogChooseSaveType")
             .dialog({
                 title: "Product was change since you started editing",
                 close: function () { $(this).remove() },
                 modal: true
             });
-        backEdit(id, productId);
-        grid.trigger("reloadGrid", [{ current: true }]);
-    });
+     });
     
 }
 
@@ -250,24 +245,37 @@ function savePresentMean(){
 }
 
 function saveMyProductBeforeEdit() {
+    saveMyProduct(productBeforEdit);
+}
+
+function saveMyProductAfterEdit() {
+    saveMyProduct(productAfterEdit);
+}
+
+function closeDialogChoiseEdit() {
+    console.log(dialogChoiseSaveEdit);
+    console.log();
+    //dialogChoiseSaveEdit.close();
+    jQuery('#dialogChooseSaveType').dialog('close');
+}
+
+function saveMyProduct(product) {
     var responseEdit;
     $.when($.ajax({
         url: $("#dialogChooseSaveType").data('savechangeUrl'),
         type: 'POST',
-        data: { 'Id': productBeforEdit.Id, 'Name': productBeforEdit.Name, 'Price': productBeforEdit.Price },
+        data: { 'Id': product.Id, 'Name': product.Name, 'Price': product.Price },
         async: false,
         success: function (response) {
             responseEdit = response;
         }
     })).then(function () {
-        parseIsErrorResponse(responseEdit)
-        
+        closeDialogChoiseEdit();
+        if (!parseIsErrorResponse(responseEdit)) {
+            grid.trigger("reloadGrid", [{ current: true }]);
+        }
+
     });
-   
-}
-
-function saveMyEditProduct() {
-
 }
 
 function errorServerMassege(response) {

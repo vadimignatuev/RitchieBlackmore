@@ -21,12 +21,12 @@
                         <td class="flex-dir-column">@Model.ProductBeforeEdit.Price</td>
                     </tr>
                      <tr>
-                        <td class="flex-dir-column">Your values</td>
+                        <td class="flex-dir-column"><h5>Your values</h5></td>
                         <td class="flex-dir-column">@Model.EditProduct.Name</td>
                         <td class="flex-dir-column">@Model.EditProduct.Price</td>
                     </tr>
                      <tr>
-                        <td class="flex-dir-column">Present values</td>
+                        <td class="flex-dir-column"><h5>Present values</h5></td>
                         <td class="flex-dir-column">@Model.PresentProduct.Name</td>
                         <td class="flex-dir-column">@Model.PresentProduct.Price</td>
                     </tr>
@@ -34,9 +34,9 @@
                 </table>
               </div>
          <div class ="row margin20">
-             <button class="button success" onclick="savePresentMean()"><span class="mif-upload2"></span> Present values</button>
-             <button class="button primary" onclick="saveMyProductBeforeEdit()"><span class="mif-arrow-up-right"></span> Your values</button>
-             <button class="button info" onclick=""><span class="mif-checkmark"></span> Present values</button>
+             <button class="button success" onclick="saveMyProductBeforeEdit()"><span class="mif-upload2"></span> Before edit</button>
+             <button class="button primary" onclick="saveMyProductAfterEdit()"><span class="mif-arrow-up-right"></span> Your values</button>
+             <button class="button info" onclick="savePresentMean()"><span class="mif-checkmark"></span> Present values</button>
             </div>
          </div>
      </div>
