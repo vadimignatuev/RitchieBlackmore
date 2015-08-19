@@ -7,6 +7,7 @@ using System.Web.Mvc;
 
 namespace RitchieBlackmore.Models
 {
+    
     public class ProductModel
     {
         [HiddenInput(DisplayValue = false)]

@@ -45,6 +45,10 @@
 <div id="idEndEditRow" data-endEditRow-url="@Url.Action("EndEditRow", "Products")"></div>
 <div id="idTableChangesProduct" data-tableChangesProduct-url="@Url.Action("TableChangesProduct", "Products")"></div>
 
+<div id ="dialogChooseSaveType" style =" display:none" data-saveChange-url="@Url.Action("SaveChange", "Products")">
+    
+</div>
+
 <div id="dialogError" class ="bg-red" data-background ="bg-red" style =" display:none">
     <div class ="row">
         <span class="mif-warning mif-4x"></span>
@@ -62,6 +66,8 @@
          Do you wont to delete this product
      </div>
 </div>
+
+
 
 @Ajax.ActionLink("Statistic", "ProductDetails", new { productStatistic = "" },
                                     new AjaxOptions { UpdateTargetId = "productDetails" },

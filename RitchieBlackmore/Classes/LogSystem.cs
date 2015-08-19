@@ -54,15 +54,13 @@ namespace RitchieBlackmore.Classes
             return true;
         }
 
-        public Boolean IsСhanged(Guid userId, Int32 productId) 
+        public Boolean IsСhanged(ProductModel product) 
         {
-            ProductModel beforeEdit = GetProductBeforeEdit(userId, productId);
-
-            if (beforeEdit != null)
+            if (product != null)
             {
                 ProductManager productManager = new ProductManager();
-                ProductModel presentProduct = productManager.GetProduct(productId);
-                return !Compare(beforeEdit, presentProduct);
+                ProductModel presentProduct = productManager.GetProduct(product.Id);
+                return !Compare(product, presentProduct);
             }
             else 
             {
@@ -73,15 +71,15 @@ namespace RitchieBlackmore.Classes
         public void DeleteEditSession(Guid userId, Int32 productId) 
         {
             ListSessionEdit.Remove(ListSessionEdit.Where(it => it.Key == userId).FirstOrDefault(it => it.Value.Id == productId));
-        } 
+        }
 
-        public TableChangesProduct GetTableChangesProduct(Guid userId, ProductModel editProduct)
+        public TableChangesProduct GetTableChangesProduct(ProductModel productBeforeEdit, ProductModel productAfterEdit)
         {
             TableChangesProduct tableChangesProduct = new TableChangesProduct();
             ProductManager productManager = new ProductManager();
-            tableChangesProduct.EditProduct = editProduct;
-            tableChangesProduct.ProductBeforeEdit = GetProductBeforeEdit(userId, editProduct.Id);
-            tableChangesProduct.PresentProduct = productManager.GetProduct(editProduct.Id);
+            tableChangesProduct.EditProduct = productAfterEdit;
+            tableChangesProduct.ProductBeforeEdit = productBeforeEdit;
+            tableChangesProduct.PresentProduct = productManager.GetProduct(productAfterEdit.Id);
             return tableChangesProduct;
         }
 

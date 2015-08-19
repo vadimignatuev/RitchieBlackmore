@@ -76,29 +76,22 @@ namespace RitchieBlackmore.Controllers
             LogSystem.Instance.AddSessionEdit((Guid)mu.ProviderUserKey, editProduct);
         }
 
-        public JsonResult EndEditRow(Int32 productId, Boolean isSave)
+        public JsonResult EndEditRow(ProductModel productBeforeEdit)
         {
-            MembershipUser mu = Membership.GetUser();
             JsonResult result;
-
-            if (isSave)
-            {   
-                result = new JsonResult()
-                {
-                    Data = new { isChanges = LogSystem.Instance.IsСhanged((Guid)mu.ProviderUserKey, productId) }
-                };
-                return result;
-            }
+                        
             result = new JsonResult()
             {
-                Data = new { isChanges = false }
+                Data = new { isChanges = LogSystem.Instance.IsСhanged(productBeforeEdit) }
             };
             return result;
+            
         }
 
-        public ActionResult TableChangesProduct(Int32 productId, String productName, Decimal price)
+        public ActionResult TableChangesProduct(ProductModel[] listProduct)
         {
-            return null;
+            TableChangesProduct tableChangesProduct = LogSystem.Instance.GetTableChangesProduct(listProduct[0], listProduct[1]);
+            return PartialView("TableChangesProduct", tableChangesProduct);
         }
 
         //[HttpPost]

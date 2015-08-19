@@ -7,10 +7,11 @@ namespace RitchieBlackmore.Models
 {
     public class TableChangesProduct
     {
-        public ProductModel ProductBeforeEdit { get; set; }
-
-        public ProductModel PresentProduct { get; set;}
-
         public ProductModel EditProduct { get; set; }
+
+        public ProductModel PresentProduct { get; set; }
+
+        public ProductModel ProductBeforeEdit { get; set; }
+                       
     }
 }

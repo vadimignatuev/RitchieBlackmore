@@ -1,0 +1,43 @@
+﻿@model RitchieBlackmore.Models.TableChangesProduct
+<div class ="cell size-x400">
+ <div class="flex-grid no-responsive-future" style="height: 100%; width: 100%">
+          <div class ="row margin20">
+             @*<h5>Product was change since you started editing</h5>*@
+             <h5>Leave the old value or resave?</h5>
+             </div>
+          <div class ="row margin20">
+                <table class="table border bordered sortable-markers-on-left">
+                <thead>
+                    <tr>
+                        <th class="flex-dir-column"></th>
+                        <th class="flex-dir-column">@Html.LabelFor(model => model.EditProduct.Name)</th>
+                        <th class="flex-dir-column">@Html.LabelFor(model => model.EditProduct.Price)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="flex-dir-column"><h5>Before edit</h5></td>
+                        <td class="flex-dir-column">@Model.ProductBeforeEdit.Name</td>
+                        <td class="flex-dir-column">@Model.ProductBeforeEdit.Price</td>
+                    </tr>
+                     <tr>
+                        <td class="flex-dir-column">Your values</td>
+                        <td class="flex-dir-column">@Model.EditProduct.Name</td>
+                        <td class="flex-dir-column">@Model.EditProduct.Price</td>
+                    </tr>
+                     <tr>
+                        <td class="flex-dir-column">Present values</td>
+                        <td class="flex-dir-column">@Model.PresentProduct.Name</td>
+                        <td class="flex-dir-column">@Model.PresentProduct.Price</td>
+                    </tr>
+                </tbody>
+                </table>
+              </div>
+         <div class ="row margin20">
+             <button class="button success" onclick="savePresentMean()"><span class="mif-upload2"></span> Present values</button>
+             <button class="button primary" onclick="saveMyProductBeforeEdit()"><span class="mif-arrow-up-right"></span> Your values</button>
+             <button class="button info" onclick=""><span class="mif-checkmark"></span> Present values</button>
+            </div>
+         </div>
+     </div>
+ 

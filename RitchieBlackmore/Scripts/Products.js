@@ -117,8 +117,24 @@ function editRow(id) {
     changeViewSelRow(id);
     grid.restoreRow(id);
     grid.editRow(id, true);
-    
+    productBeforEdit = fixProductInEdit(id);
+    console.log(productBeforEdit);
 }
+
+var productBeforEdit;
+var productAfterEdit;
+
+function fixProductInEdit(id) {
+
+    var product = {};
+    product.Id = $("#" + id + "_Id").val();
+    product.Name = $("#" + id + "_Name").val();
+    product.Price = $("#" + id + "_Price").val();
+    product.Quantity = 0;
+    product.TotalCost = 0;
+    return product;
+}
+
 
 function backEdit(id, productId) {
     console.log("successSaveEdit backEdit");
@@ -132,13 +148,15 @@ function saveChange(id, productId)
     //grid.setRowData(id);
     var rowData = grid.getRowData(id);
     var responseEdit;
-    
+    var datasome = grid.getGridParam('savedRow');
+    console.log("savedRow " + datasome.Name);
     console.log("rowData  after  " + grid.getCell(id, 1));
+
 
     $.when($.ajax({
         url: $("#idEndEditRow").data('endeditrowUrl'),
         type: 'POST',
-        data: { "productId": productId, "isSave": true },
+        data: productBeforEdit,
         async: false,
         success: function (response) {
             responseEdit = response;
@@ -154,7 +172,12 @@ function saveChange(id, productId)
   
 }
 
+
 function successSaveEdit(id, response, productId) {
+    var rowData = grid.getRowData(id);
+    console.log("showSaveEditDialog " + rowData.Name);
+    var name = $("#" + id + "_Name").val();
+    console.log("input val " + name);
     console.log("successSaveEdit");
     //grid.editRow(id, true);
     grid.saveRow(id,
@@ -177,21 +200,31 @@ function successSaveEdit(id, response, productId) {
 }
 
 function showSaveEditDialog(id, productId) {
-    console.log("showSaveEditDialog");
-    grid.restoreRow(id);
-    var rowData = grid.getRowData(id);
-
-    var href = $("#idTableChangesProduct").data('tablechangesproductUrl')+"?productId:" + rowData.Id + "&productName:" + rowData.Name + "&price:" + rowData.Price;
-
-    var dialog = $("<div></div>")
-                .addClass("dialog")
-                .appendTo("body")
-                .dialog({
-                                        
-                    close: function () { $(this).remove() },
-                    modal: true
-                })
-                .load(href);
+    var afterEdit = fixProductInEdit(id);
+    var href = $("#idTableChangesProduct").data('tablechangesproductUrl') + "?" + JSON.stringify({ listProduct: listProduct });
+    var listProduct = [productBeforEdit, afterEdit];
+    var responseHtml;
+    $.when($.ajax({
+        type: "POST",
+        async: false,
+        contentType: "application/json",
+        url: $("#idTableChangesProduct").data('tablechangesproductUrl'),
+        data: JSON.stringify({ listProduct: listProduct }),
+        success: function (response) {
+            responseHtml = response;
+        }
+    })).then(function () {
+        $("#dialogChooseSaveType").html(responseHtml);
+        var dialog = $("#dialogChooseSaveType")
+            .dialog({
+                title: "Product was change since you started editing",
+                close: function () { $(this).remove() },
+                modal: true
+            });
+        backEdit(id, productId);
+        grid.trigger("reloadGrid", [{ current: true }]);
+    });
+    
 }
 
 function parseIsErrorResponse(response) {
@@ -211,6 +244,31 @@ function parseIsErrorResponse(response) {
     }
     return false;
 };
+
+function savePresentMean(){
+    grid.trigger("reloadGrid", [{ current: true }]);
+}
+
+function saveMyProductBeforeEdit() {
+    var responseEdit;
+    $.when($.ajax({
+        url: $("#dialogChooseSaveType").data('savechangeUrl'),
+        type: 'POST',
+        data: { 'Id': productBeforEdit.Id, 'Name': productBeforEdit.Name, 'Price': productBeforEdit.Price },
+        async: false,
+        success: function (response) {
+            responseEdit = response;
+        }
+    })).then(function () {
+        parseIsErrorResponse(responseEdit)
+        
+    });
+   
+}
+
+function saveMyEditProduct() {
+
+}
 
 function errorServerMassege(response) {
     $("#dialogError").dialog({
@@ -266,13 +324,16 @@ function getProductDetails(id) {
 }
 
 function clickProductDetailsLink(id, e) {
-
-    var href = $("#productDetails").data('productdetailsUrl');
-    console.log(href);
-    href = href + "?id=" + encodeURIComponent(id);
-    console.log(href);
-    $("#productDetailsLink").attr("href", href);
-    clickHreh("#productDetailsLink", e);
+    
+    if (typeof id === "number") {
+        console.log("id is number");
+        var href = $("#productDetails").data('productdetailsUrl');
+        console.log(href);
+        href = href + "?id=" + encodeURIComponent(id);
+        console.log(href);
+        $("#productDetailsLink").attr("href", href);
+        clickHreh("#productDetailsLink", e);
+    }
 }
 
 function clickHreh(hrefId, e) {

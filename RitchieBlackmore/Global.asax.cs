@@ -43,6 +43,12 @@ namespace RitchieBlackmore
                 new { controller = "Products", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
+            //routes.MapRoute(
+            //    "TableChangesProduct", // Route name
+            //    "{controller}/{action}/{productBeforeEdit}/{productAfterEdit}", // URL with parameters
+            //    new { controller = "Products", action = "TableChangesProduct", productBeforeEdit = UrlParameter.Optional, productAfterEdit = UrlParameter.Optional } // Parameter defaults
+            //);
+
         }
 
         protected void Application_Start()
