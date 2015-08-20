@@ -1,4 +1,5 @@
-﻿using RitchieBlackmore.Models;
+﻿using RitchieBlackmore.Classes.LogSystemCore;
+using RitchieBlackmore.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +9,11 @@ namespace RitchieBlackmore.Classes
 {
     public class LogSystem : Singleton<LogSystem>
     {
-        private List<KeyValuePair<Guid, ProductModel>> ListSessionEdit { get; set; }
         private Dictionary<Type, String> MassegeDictionary { get; set; }
-        private String MassegeUnknownError { get; set; }
+        public event EventHandler<ErrorMassage> ErrorInSystem;
         
         private LogSystem() 
         {
-            MassegeUnknownError = "Error occurred in server";
-            ListSessionEdit = new List<KeyValuePair<Guid,ProductModel>>();
             InitDictionaryMasseges();
         }
 
@@ -23,17 +21,7 @@ namespace RitchieBlackmore.Classes
         {
             MassegeDictionary = new Dictionary<Type, string>();
         }
-
-        public void AddSessionEdit(Guid userId, ProductModel product) 
-        {
-            ListSessionEdit.Add(new KeyValuePair<Guid, ProductModel>(userId, product));
-        }
-
-        public ProductModel GetProductBeforeEdit(Guid userId, Int32 productId)
-        {
-            return ListSessionEdit.Where(it => it.Key == userId).LastOrDefault(it => it.Value.Id == productId).Value;
-        }
-
+              
         public Boolean Compare(ProductModel firstProduct, ProductModel secondProduct) 
         {
             if (firstProduct.Id != secondProduct.Id)
@@ -68,11 +56,6 @@ namespace RitchieBlackmore.Classes
             }
         }
 
-        public void DeleteEditSession(Guid userId, Int32 productId) 
-        {
-            ListSessionEdit.Remove(ListSessionEdit.Where(it => it.Key == userId).FirstOrDefault(it => it.Value.Id == productId));
-        }
-
         public TableChangesProduct GetTableChangesProduct(ProductModel productBeforeEdit, ProductModel productAfterEdit)
         {
             TableChangesProduct tableChangesProduct = new TableChangesProduct();
@@ -83,15 +66,11 @@ namespace RitchieBlackmore.Classes
             return tableChangesProduct;
         }
 
-        public String GetErrorMassage(Exception e) 
+        public void PublishErrorMassage(String errorMassege)
         {
-            if(MassegeDictionary.ContainsKey(e.GetType())) 
+            if (errorMassege != null && ErrorInSystem != null)
             {
-                return MassegeDictionary[e.GetType()] ;
-            }
-            else
-            {
-                return null;
+                ErrorInSystem(this, new ErrorMassage(errorMassege));
             }
         }
 

@@ -153,6 +153,8 @@
       <DependentUpon>IgnatuevTestTask.tt</DependentUpon>
     </Compile>
     <Compile Include="Classes\LogSystem.cs" />
+    <Compile Include="Classes\LogSystemCore\ErrorDictionary.cs" />
+    <Compile Include="Classes\LogSystemCore\ErrorMassage.cs" />
     <Compile Include="Classes\OperationManager.cs" />
     <Compile Include="Classes\PageManager.cs" />
     <Compile Include="Classes\ProductManager.cs" />

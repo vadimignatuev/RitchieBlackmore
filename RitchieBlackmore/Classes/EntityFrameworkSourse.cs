@@ -7,6 +7,7 @@ using System.Web;
 
 using RitchieBlackmore.Models;
 using System.Data.Entity.Core.Objects;
+using RitchieBlackmore.Classes.LogSystemCore;
 
 namespace RitchieBlackmore.Classes
 {
@@ -93,24 +94,54 @@ namespace RitchieBlackmore.Classes
 
         public void UpdateProduct(ProductModel product)
         {
-            using (var db = GetDbConnection())
+            try
             {
-                Product updatingProduct = db.Product.FirstOrDefault(it => it.Id == product.Id);
-                if (updatingProduct != null)
+                using (var db = GetDbConnection())
                 {
-                    updatingProduct.Name = product.Name;
-                    updatingProduct.Price = product.Price;
-                    updatingProduct.Quantity = product.Quantity;
-                    db.SaveChanges();
+                    Product updatingProduct = db.Product.FirstOrDefault(it => it.Id == product.Id);
+                    if (updatingProduct != null)
+                    {
+                        updatingProduct.Name = product.Name;
+                        updatingProduct.Price = product.Price;
+                        updatingProduct.Quantity = product.Quantity;
+                        db.SaveChanges();
+                    }
                 }
+            }
+            catch (NullReferenceException e)
+            {
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.DB_HAVE_NOT_ITEM);
+            }
+            catch (System.Data.Entity.Core.ProviderIncompatibleException e)
+            {
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.NON_DB_CONNECTION);
+            }
+            catch (Exception e)
+            {
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.MASSAGE_UNNOUN_ERROR);
             }
         }
 
         public void DeleteProduct(Int32 id)
         {
-            using (var db = GetDbConnection())
+            try
             {
-                db.DeleteProduct(id);
+                using (var db = GetDbConnection())
+                {
+                    db.DeleteProduct(id);
+                }
+            }
+            catch (NullReferenceException e)
+            {
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.DB_HAVE_NOT_ITEM);
+            }
+            catch (System.Data.Entity.Core.ProviderIncompatibleException e)
+            {
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.NON_DB_CONNECTION);
+            }
+            catch (Exception e)
+            {
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.MASSAGE_UNNOUN_ERROR);
             }
         }
 

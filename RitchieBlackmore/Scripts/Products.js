@@ -37,8 +37,8 @@
         onSelectRow: function (rowid, status, e) {
             $("#productDetails").css('display', 'block');
             var Id = grid.getRowData(rowid).Id;
-            clickProductDetailsLink(Id, e);
             updatePosition(rowid);
+            clickProductDetailsLink(Id, e);
         },
         gridComplete: function(){}
         
@@ -214,7 +214,8 @@ function showSaveEditDialog(id, productId) {
         $("#dialogChooseSaveType").html(responseHtml);
         dialogChoiseSaveEdit = $("#dialogChooseSaveType")
             .dialog({
-                title: "Product was change since you started editing",
+                width: 700,
+                //title: "Product was change since you started editing",
                 close: function () { $(this).remove() },
                 modal: true
             });
@@ -240,7 +241,8 @@ function parseIsErrorResponse(response) {
     return false;
 };
 
-function savePresentMean(){
+function savePresentMean() {
+    closeDialogChoiseEdit();
     grid.trigger("reloadGrid", [{ current: true }]);
 }
 
@@ -306,6 +308,7 @@ function deleteRow(id) {
                     async: false,
                     success: function (response) {
                         errorDel = parseIsErrorResponse(response);
+                        grid.trigger("reloadGrid", [{ current: true }]);
                 }
                 })).then(function () {
                     if (!errorDel) {
@@ -333,15 +336,14 @@ function getProductDetails(id) {
 
 function clickProductDetailsLink(id, e) {
     
-    if (typeof id === "number") {
-        console.log("id is number");
+    if (!(id.indexOf('input') + 1)) {
         var href = $("#productDetails").data('productdetailsUrl');
-        console.log(href);
         href = href + "?id=" + encodeURIComponent(id);
-        console.log(href);
+        console.log("clickProductDetailsLink href withiut input" + href);
         $("#productDetailsLink").attr("href", href);
         clickHreh("#productDetailsLink", e);
     }
+        
 }
 
 function clickHreh(hrefId, e) {

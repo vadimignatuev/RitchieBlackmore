@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using System.Web.Security;
 using RitchieBlackmore.Classes;
+using RitchieBlackmore.Classes.LogSystemCore;
 
 namespace RitchieBlackmore.Controllers
 {
@@ -15,6 +16,16 @@ namespace RitchieBlackmore.Controllers
     {
         //
         // GET: /Product/
+
+        public ProductsController() 
+        {
+            LogSystem.Instance.ErrorInSystem += this.AddErrorToModel;
+        }
+
+        private void AddErrorToModel(object sender, ErrorMassage e)
+        {
+            ModelState.AddModelError("", e.Massage);
+        }
 
         private JsonResult PrepareJsonResult()
         {
@@ -66,16 +77,6 @@ namespace RitchieBlackmore.Controllers
             return result;
         }
 
-        public void StartEditRow(Int32 productId, String productName, Decimal price)
-        {
-            ProductModel editProduct = new ProductModel();
-            editProduct.Id = productId;
-            editProduct.Name = productName;
-            editProduct.Price = price;
-            MembershipUser mu = Membership.GetUser();
-            LogSystem.Instance.AddSessionEdit((Guid)mu.ProviderUserKey, editProduct);
-        }
-
         public JsonResult EndEditRow(ProductModel productBeforeEdit)
         {
             JsonResult result;
@@ -114,7 +115,7 @@ namespace RitchieBlackmore.Controllers
             }
             catch(Exception e) 
             {
-                ModelState.AddModelError("", e.Message);
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.MASSAGE_UNNOUN_ERROR);
             }
             return PrepareJsonResult();           
         }
@@ -166,7 +167,7 @@ namespace RitchieBlackmore.Controllers
             }
             catch (Exception e)
             {
-                ModelState.AddModelError("", e.Message);
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.MASSAGE_UNNOUN_ERROR);
             }
             return PrepareJsonResult();           
         }
@@ -180,7 +181,7 @@ namespace RitchieBlackmore.Controllers
             }
             catch(Exception e)
             {
-                ModelState.AddModelError("", e.Message);
+                LogSystem.Instance.PublishErrorMassage(ErrorDictionary.DB_HAVE_NOT_ITEM);
             }
             return PrepareJsonResult();
         }
